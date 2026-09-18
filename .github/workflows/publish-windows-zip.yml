@@ -1,0 +1,265 @@
+name: Publish Dustline Windows ZIP
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-windows-zip.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dustline-windows-build24-package
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.repository == 'Rex11929282/dustline'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    env:
+      SOURCE_COMMIT: 330d14e68b7716ec49c791152398d3f8e4d2b131
+      RELEASE_TAG: v0.6.6-build24-download
+      GIT_TERMINAL_PROMPT: '0'
+    steps:
+      - name: Obtain the pinned game and complete LFS objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init game
+          git -C game remote add origin https://github.com/mmsx4717/dustline.git
+          git -C game fetch --depth=1 origin "$SOURCE_COMMIT"
+          GIT_LFS_SKIP_SMUDGE=1 git -C game checkout --detach FETCH_HEAD
+          test "$(git -C game rev-parse HEAD)" = "$SOURCE_COMMIT"
+          git -C game lfs install --local
+          git -C game lfs pull origin
+          git -C game lfs fsck
+
+      - name: Verify all game files and build a complete compressed ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -u - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import zipfile
+          from pathlib import Path, PurePosixPath
+
+          root = Path('game').resolve()
+          out = Path('dist')
+          out.mkdir(exist_ok=True)
+          manifest = root / 'SHA256SUMS.txt'
+          entries = {}
+          seen = set()
+          total = 0
+          for line in manifest.read_text(encoding='utf-8-sig').splitlines():
+              if not line.strip():
+                  continue
+              match = re.fullmatch(r'([a-fA-F0-9]{64})\s+\*?(.+)', line)
+              if not match:
+                  raise ValueError('Invalid SHA256 manifest line')
+              expected, name = match.groups()
+              path = PurePosixPath(name)
+              if path.is_absolute() or '..' in path.parts or '.git' in path.parts or '\\' in name or ':' in name:
+                  raise ValueError(f'Unsafe manifest path: {name}')
+              if name.casefold() in seen:
+                  raise ValueError(f'Duplicate manifest path: {name}')
+              seen.add(name.casefold())
+              source = root / name
+              if not source.is_file() or source.is_symlink() or root not in source.resolve().parents:
+                  raise ValueError(f'Missing or unsafe game file: {name}')
+              digest = hashlib.sha256()
+              with source.open('rb') as handle:
+                  for block in iter(lambda: handle.read(8 * 1024 * 1024), b''):
+                      digest.update(block)
+              if digest.hexdigest() != expected.lower():
+                  raise ValueError(f'SHA256 mismatch or unresolved LFS pointer: {name}')
+              entries[name] = expected.lower()
+              total += source.stat().st_size
+              print(f'Verified {len(entries)}: {name}', flush=True)
+          required = {'Dustline.exe', 'UnityPlayer.dll', 'UnityCrashHandler64.exe', 'Dustline_Data/resources.assets', 'Dustline_Data/resources.assets.resS'}
+          if len(entries) != 165 or not required.issubset(entries):
+              raise ValueError('The pinned build24 manifest is incomplete')
+          expected_sizes = {'Dustline_Data/resources.assets': 699709704, 'Dustline_Data/resources.assets.resS': 788037760}
+          for name, size in expected_sizes.items():
+              if (root / name).stat().st_size != size:
+                  raise ValueError(f'Unexpected resource size: {name}')
+
+          launcher = '''@echo off
+          setlocal
+          cd /d "%~dp0"
+          if not exist "Dustline.exe" goto incomplete
+          if not exist "UnityPlayer.dll" goto incomplete
+          if not exist "Dustline_Data\\resources.assets" goto incomplete
+          if not exist "Dustline_Data\\resources.assets.resS" goto incomplete
+          start "" "%~dp0Dustline.exe"
+          exit /b 0
+          :incomplete
+          echo Incomplete game folder. Extract the ENTIRE ZIP before starting.
+          pause
+          exit /b 1
+          '''
+          installer_cmd = '''@echo off
+          setlocal
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Install-Dustline.ps1"
+          set "RESULT=%ERRORLEVEL%"
+          pause
+          exit /b %RESULT%
+          '''
+          installer_ps1 = r'''#requires -Version 5.1
+          $ErrorActionPreference = 'Stop'
+          Set-StrictMode -Version Latest
+          try {
+              if (-not [Environment]::Is64BitOperatingSystem) { throw '64-bit Windows is required.' }
+              $target = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Programs\Dustline'
+              Write-Host "Offline installation to: $target"
+              Write-Host 'This does not download anything or automatically start the game.'
+              if ((Read-Host 'Type Y to install or repair this build') -notmatch '^[Yy]$') { exit 0 }
+              function Check-Path([string]$path) {
+                  while ($path) {
+                      if (Test-Path -LiteralPath $path) {
+                          if (((Get-Item -LiteralPath $path -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { throw "Refusing symlink/junction: $path" }
+                      }
+                      $path = [IO.Path]::GetDirectoryName($path)
+                  }
+              }
+              Check-Path $target
+              $items = @()
+              foreach ($line in [IO.File]::ReadAllLines((Join-Path $PSScriptRoot 'SHA256SUMS.txt'), [Text.Encoding]::UTF8)) {
+                  if (-not $line.Trim()) { continue }
+                  if ($line -notmatch '^([a-fA-F0-9]{64})\s+\*?(.+)$') { throw 'Invalid manifest.' }
+                  $hash = $Matches[1]; $name = $Matches[2]
+                  if ([IO.Path]::IsPathRooted($name) -or $name.Contains(':') -or (($name -split '[\\/]') -contains '..')) { throw 'Unsafe manifest path.' }
+                  $source = Join-Path $PSScriptRoot $name
+                  $dest = Join-Path $target $name
+                  Check-Path $source
+                  Check-Path $dest
+                  if ((Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash -ne $hash) { throw "Damaged ZIP content: $name" }
+                  $items += [pscustomobject]@{ Source=$source; Destination=$dest; Hash=$hash; Name=$name }
+              }
+              if ($items.Count -ne 165) { throw 'Incomplete manifest.' }
+              $i = 0
+              foreach ($item in $items) {
+                  $i++
+                  Write-Progress -Activity 'Install Dustline' -Status $item.Name -PercentComplete ($i * 100 / $items.Count)
+                  New-Item -ItemType Directory -Path ([IO.Path]::GetDirectoryName($item.Destination)) -Force | Out-Null
+                  if (-not $item.Source.Equals($item.Destination, [StringComparison]::OrdinalIgnoreCase)) {
+                      Copy-Item -LiteralPath $item.Source -Destination $item.Destination -Force
+                  }
+                  if ((Get-FileHash -LiteralPath $item.Destination -Algorithm SHA256).Hash -ne $item.Hash) { throw "Copy verification failed: $($item.Name)" }
+              }
+              foreach ($name in @('SHA256SUMS.txt', 'Start-Dustline.cmd', 'PACKAGE-README.txt')) {
+                  $src = Join-Path $PSScriptRoot $name; $dst = Join-Path $target $name
+                  Check-Path $dst
+                  if (-not $src.Equals($dst, [StringComparison]::OrdinalIgnoreCase)) { Copy-Item -LiteralPath $src -Destination $dst -Force }
+              }
+              Write-Progress -Activity 'Install Dustline' -Completed
+              try {
+                  $shell = New-Object -ComObject WScript.Shell
+                  $menu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Dustline'
+                  New-Item -ItemType Directory -Path $menu -Force | Out-Null
+                  foreach ($folder in @([Environment]::GetFolderPath('Desktop'), $menu)) {
+                      $shortcut = $shell.CreateShortcut((Join-Path $folder 'Dustline.lnk'))
+                      $shortcut.TargetPath = Join-Path $target 'Dustline.exe'
+                      $shortcut.WorkingDirectory = $target
+                      $shortcut.IconLocation = (Join-Path $target 'Dustline.exe') + ',0'
+                      $shortcut.Save()
+                  }
+              } catch { Write-Warning 'Shortcut creation failed; open Start-Dustline.cmd in the install folder.' }
+              Write-Host "SUCCESS. Installed to: $target"
+              Write-Host 'Use the Desktop or Start Menu Dustline shortcut.'
+              exit 0
+          } catch {
+              Write-Host ('INSTALLATION NOT COMPLETE: ' + $_.Exception.Message) -ForegroundColor Red
+              exit 1
+          }
+          '''
+          readme = '''Dustline 0.6.6 build24-public - complete Windows package
+
+          Original game: https://github.com/mmsx4717/dustline
+          Packaging fork: https://github.com/Rex11929282/dustline
+          Source commit: 330d14e68b7716ec49c791152398d3f8e4d2b131
+
+          Extract the ENTIRE ZIP first. Do not run the game from inside the ZIP.
+          Run Install-Dustline.cmd to install offline into:
+          %LOCALAPPDATA%\\Programs\\Dustline
+          This checks every game file and creates Desktop / Start Menu shortcuts.
+          Alternatively, run Start-Dustline.cmd inside the extracted Dustline folder.
+          Keep UnityPlayer.dll, Dustline_Data, MonoBleedingEdge and D3D12 together.
+
+          This is a repack of the existing Windows build, not a new game build.
+          No automatic LAN discovery, Unity WebGL conversion or asset reduction is included.
+          The game binaries and original instructions are unchanged.
+          Archive/hash verification is not a Windows gameplay or malware assessment.
+          Original authorship and rights remain with their respective owners.
+          '''
+          archive = out / 'Dustline-Windows-x64.zip'
+          with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED, compresslevel=9, allowZip64=True) as z:
+              for name in sorted(entries):
+                  z.write(root / name, 'Dustline/' + name)
+              for name in ('SHA256SUMS.txt', 'README.md'):
+                  if name not in entries and (root / name).is_file():
+                      z.write(root / name, 'Dustline/' + name)
+              for name, content in {'Start-Dustline.cmd': launcher, 'Install-Dustline.cmd': installer_cmd, 'Install-Dustline.ps1': installer_ps1, 'PACKAGE-README.txt': readme}.items():
+                  z.writestr('Dustline/' + name, content.replace('\n', '\r\n').encode('utf-8'))
+          if archive.stat().st_size >= 2 * 1024**3:
+              raise ValueError('Archive exceeds the GitHub Release asset limit')
+          with zipfile.ZipFile(archive) as z:
+              for name, expected in entries.items():
+                  digest = hashlib.sha256()
+                  with z.open('Dustline/' + name) as handle:
+                      for block in iter(lambda: handle.read(8 * 1024 * 1024), b''):
+                          digest.update(block)
+                  if digest.hexdigest() != expected:
+                      raise ValueError(f'ZIP round-trip verification failed: {name}')
+          digest = hashlib.sha256()
+          with archive.open('rb') as handle:
+              for block in iter(lambda: handle.read(8 * 1024 * 1024), b''):
+                  digest.update(block)
+          sha = digest.hexdigest()
+          (out / 'Dustline-Windows-x64.zip.sha256').write_text(f'{sha}  {archive.name}\n', encoding='ascii')
+          info = {'game_version': '0.6.6', 'build': 'build24-public', 'source_commit': os.environ['SOURCE_COMMIT'], 'source_repository': 'mmsx4717/dustline', 'package_repository': os.environ['GITHUB_REPOSITORY'], 'verified_game_files': len(entries), 'game_bytes': total, 'zip_bytes': archive.stat().st_size, 'sha256': sha, 'windows_gameplay_tested': False}
+          (out / 'package-info.json').write_text(json.dumps(info, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          notes = f'''Complete Windows 64-bit package of the original Dustline build24.
+          
+          Original game: https://github.com/mmsx4717/dustline
+          Packaging: https://github.com/{os.environ['GITHUB_REPOSITORY']}
+          
+          Download **Dustline-Windows-x64.zip** (not Source code), extract everything, then run **Install-Dustline.cmd**. It installs offline to `%LOCALAPPDATA%\\Programs\\Dustline` and creates shortcuts. Portable play: run Start-Dustline.cmd inside the extracted folder.
+          
+          ZIP: {archive.stat().st_size / 1024**2:.1f} MiB. Original game files: {total / 1024**2:.1f} MiB. All {len(entries)} game files passed the upstream SHA256 manifest check and ZIP round-trip validation. No Windows gameplay test was performed. Compression does not reduce the installed asset size or add features.
+          
+          Source commit: `{os.environ['SOURCE_COMMIT']}`
+          ZIP SHA256: `{sha}`
+          
+          Original authorship and rights remain with the respective owners.
+          '''
+          (out / 'RELEASE.md').write_text(notes, encoding='utf-8')
+          print(json.dumps(info, indent=2), flush=True)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as handle:
+              handle.write(notes)
+          PY
+
+      - name: Publish verified files to this fork only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = 'Rex11929282/dustline'
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Release tag already exists. Refusing to overwrite existing release assets.'
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" --title 'Dustline 0.6.6 build24 - Windows complete package' \
+            --notes-file dist/RELEASE.md --draft
+          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            dist/Dustline-Windows-x64.zip dist/Dustline-Windows-x64.zip.sha256 dist/package-info.json
+          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json url,assets
