@@ -223,7 +223,46 @@ jobs:
                   digest.update(block)
           sha = digest.hexdigest()
           (out / 'Dustline-Windows-x64.zip.sha256').write_text(f'{sha}  {archive.name}\n', encoding='ascii')
-          info = {'game_version': '0.6.6', 'build': 'build24-public', 'source_commit': os.environ['SOURCE_COMMIT'], 'source_repository': 'mmsx4717/dustline', 'package_repository': os.environ['GITHUB_REPOSITORY'], 'verified_game_files': len(entries), 'game_bytes': total, 'zip_bytes': archive.stat().st_size, 'sha256': sha, 'windows_gameplay_tested': False}
+
+          # Split the compressed package into CDN-cache-friendly chunks.
+          # Concatenating the parts in order reconstructs the original ZIP.
+          part_size = 384 * 1024 * 1024
+          parts = []
+          with archive.open('rb') as source:
+              index = 1
+              while True:
+                  data = source.read(part_size)
+                  if not data:
+                      break
+                  part_name = f'Dustline-Windows-x64.zip.part{index:02d}'
+                  part_path = out / part_name
+                  part_path.write_bytes(data)
+                  parts.append({
+                      'index': index,
+                      'name': part_name,
+                      'bytes': len(data),
+                      'sha256': hashlib.sha256(data).hexdigest(),
+                      'github_url': f"https://github.com/{os.environ['GITHUB_REPOSITORY']}/releases/download/{os.environ['RELEASE_TAG']}/{part_name}",
+                  })
+                  index += 1
+          if len(parts) < 2 or any(part['bytes'] > 512 * 1024 * 1024 for part in parts):
+              raise ValueError('Unexpected CDN part layout')
+          download_manifest = {
+              'schema': 1,
+              'game_version': '0.6.6',
+              'build': 'build24-public',
+              'archive': {
+                  'name': archive.name,
+                  'bytes': archive.stat().st_size,
+                  'sha256': sha,
+              },
+              'parts': parts,
+          }
+          (out / 'download-manifest.json').write_text(
+              json.dumps(download_manifest, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          info = {'game_version': '0.6.6', 'build': 'build24-public', 'source_commit': os.environ['SOURCE_COMMIT'], 'source_repository': 'mmsx4717/dustline', 'package_repository': os.environ['GITHUB_REPOSITORY'], 'verified_game_files': len(entries), 'game_bytes': total, 'zip_bytes': archive.stat().st_size, 'sha256': sha, 'cdn_parts': len(parts), 'windows_gameplay_tested': False}
           (out / 'package-info.json').write_text(json.dumps(info, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
           notes = f'''Complete Windows 64-bit package of the original Dustline build24.
           
@@ -252,14 +291,48 @@ jobs:
         run: |
           set -euo pipefail
           test "$GITHUB_REPOSITORY" = 'Rex11929282/dustline'
-          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo 'Release tag already exists. Refusing to overwrite existing release assets.'
-            exit 1
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" --title 'Dustline 0.6.6 build24 - Windows complete package' \
+              --notes-file dist/RELEASE.md --draft
           fi
-          gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
-            --target "$GITHUB_SHA" --title 'Dustline 0.6.6 build24 - Windows complete package' \
-            --notes-file dist/RELEASE.md --draft
-          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
-            dist/Dustline-Windows-x64.zip dist/Dustline-Windows-x64.zip.sha256 dist/package-info.json
-          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
+          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --clobber \
+            dist/Dustline-Windows-x64.zip \
+            dist/Dustline-Windows-x64.zip.sha256 \
+            dist/package-info.json \
+            dist/download-manifest.json \
+            dist/Dustline-Windows-x64.zip.part*
+          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --notes-file dist/RELEASE.md --draft=false --latest
           gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json url,assets
+
+      - name: Mirror split package to Cloudflare R2 when configured
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_PUBLIC_BASE_URL: ${{ secrets.R2_PUBLIC_BASE_URL }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${AWS_ACCESS_KEY_ID:-}" ] || [ -z "${AWS_SECRET_ACCESS_KEY:-}" ] || [ -z "${R2_ACCOUNT_ID:-}" ] || [ -z "${R2_BUCKET:-}" ]; then
+            echo 'R2 credentials are not configured; GitHub Release remains the active source.'
+            exit 0
+          fi
+          endpoint="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+          prefix="dustline/${RELEASE_TAG}"
+          for file in dist/Dustline-Windows-x64.zip.part*; do
+            aws s3 cp "$file" "s3://${R2_BUCKET}/${prefix}/$(basename "$file")" \
+              --endpoint-url "$endpoint" \
+              --content-type application/octet-stream \
+              --cache-control 'public,max-age=31536000,immutable'
+          done
+          aws s3 cp dist/download-manifest.json "s3://${R2_BUCKET}/${prefix}/download-manifest.json" \
+            --endpoint-url "$endpoint" \
+            --content-type application/json \
+            --cache-control 'public,max-age=60'
+          if [ -n "${R2_PUBLIC_BASE_URL:-}" ]; then
+            echo "CDN manifest: ${R2_PUBLIC_BASE_URL%/}/${prefix}/download-manifest.json"
+          fi
