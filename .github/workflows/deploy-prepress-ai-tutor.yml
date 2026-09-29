@@ -1,0 +1,24 @@
+name: Deploy Prepress AI Tutor to Netlify
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'prepress-ai-tutor/**'
+      - '.github/workflows/deploy-prepress-ai-tutor.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Netlify
+        working-directory: prepress-ai-tutor
+        run: |
+          npx -y @netlify/mcp@latest \
+            --site-id 4b7f1a72-c5a3-4c78-919b-cd827207d69f \
+            --proxy-path "https://netlify-mcp.netlify.app/proxy/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..oR1-vrHrdW3F7K1b.QNH3Ks-yBp5aVe4NI0x1Jd2GDEkOXuJPksYFIU9RSJ1OBxv-2GLYX8tWKLFfXFzZGatXfAfV8Fkn80ccryS0NsphnGybHXLyc6a5W0q1vMJlAIY0SBlgQ4ThReTMO6QxGk1RU8VXtOsjRol5xIeA9y_70Xvj8yP96N3HOD-SlNiRIFmlTGBFVtAt-z2VjUVC_CjiPR14z-Hao6vUgVmKkGSPJVy4Dx56qgGKZdh9ypmJaidTAes0fznczssX4ku70J6qjU0oQ99oVp64nA8l7J7S_6ECViAard_wCFbbv9uIGpU5J0AXAhcQ1-jK0Ga8rO1tpJ1YXlkxtfbOkHh1c76MceO8eIDIl3Z5MAoBmvJEiMoZhqPvnFmgHkZuxP5rqnR1-kIc.4C0iEXYuJamsZSertZsvpA"
