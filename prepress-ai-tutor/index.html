@@ -27,14 +27,14 @@
       <section class="hero-grid">
         <article class="hero-card">
           <span class="tag">題庫</span>
-          <strong id="bankCount">範例題 10 題</strong>
-          <p id="bankStatus">可先試用；匯入官方 PDF 後自動切成 1～5 章。</p>
-          <div class="row">
-            <label class="button primary" for="pdfInput">匯入官方 PDF</label>
-            <input id="pdfInput" type="file" accept="application/pdf" hidden />
-            <button id="exportBank" class="ghost">匯出題庫 JSON</button>
-            <label class="button ghost" for="bankJsonInput">匯入題庫 JSON</label>
-            <input id="bankJsonInput" type="file" accept="application/json,.json" hidden />
+          <strong id="bankCount">正在載入完整題庫…</strong>
+          <p id="bankStatus">開啟網站後會自動載入完整 660 題，不需要匯入任何檔案。</p>
+          <div class="hidden">
+            <label for="pdfInput">匯入官方 PDF</label>
+            <input id="pdfInput" type="file" accept="application/pdf" />
+            <button id="exportBank">匯出題庫 JSON</button>
+            <label for="bankJsonInput">匯入題庫 JSON</label>
+            <input id="bankJsonInput" type="file" accept="application/json,.json" />
           </div>
         </article>
         <article class="hero-card">
@@ -44,8 +44,8 @@
           <div class="row">
             <button id="preGenerate" class="primary">預先生成全部詳解</button>
             <button id="pauseGenerate" class="ghost" disabled>暫停</button>
-            <button id="exportExplanations" class="ghost">匯出詳解庫</button>
-            <label class="button ghost" for="explanationInput">匯入詳解庫</label>
+            <button id="exportExplanations" class="ghost hidden">匯出詳解庫</button>
+            <label class="button ghost hidden" for="explanationInput">匯入詳解庫</label>
             <input id="explanationInput" type="file" accept="application/json,.json" hidden />
           </div>
           <div class="mini-progress"><span id="explainProgress"></span></div>
@@ -53,13 +53,13 @@
       </section>
 
       <nav class="tabs" aria-label="主要功能">
-        <button data-tab="study" class="active">完整學習</button>
-        <button data-tab="quiz">題庫練習</button>
+        <button data-tab="quiz" class="active">題庫練習</button>
+        <button data-tab="study">完整學習</button>
         <button data-tab="review">錯題 / 收藏</button>
         <button data-tab="teacher">AI 老師</button>
       </nav>
 
-      <section id="study" class="view active">
+      <section id="study" class="view">
         <div class="section-head">
           <div><div class="eyebrow">電子講義</div><h2>1～5 單元完整複習</h2></div>
           <p>每章包含學習目標、必背核心、觀念、公式、例子、常見陷阱與快速記法。</p>
@@ -71,7 +71,7 @@
         </article>
       </section>
 
-      <section id="quiz" class="view">
+      <section id="quiz" class="view active">
         <article class="panel">
           <div class="section-head compact-head"><div><div class="eyebrow">練習設定</div><h2>選擇章節</h2></div><span id="selectedInfo">第 1 章</span></div>
           <div id="chapterChooser" class="chapter-grid"></div>
@@ -256,7 +256,7 @@ function renderChapters(){const c=$('#chapterChooser');c.innerHTML='';for(const 
 $('#selectAll').onclick=()=>{chapterDefs.forEach(x=>selected.add(x.id));renderChapters()};$('#clearAll').onclick=()=>{selected.clear();renderChapters()};
 function updateStats(){
   $('#bankCount').textContent=questions.length>=600?`完整題庫 ${questions.length} 題`:`範例題 ${questions.length} 題`;
-  $('#bankStatus').textContent=questions.length>=600?'完整題庫已就緒；可直接練習，也可先生成全部詳解。':'可先試用；匯入官方 PDF 或題庫 JSON 後自動切成 1～5 章。';
+  $('#bankStatus').textContent=questions.length>=600?'完整題庫已就緒，可直接開始測驗。':'正在自動載入完整 660 題，暫時可先使用已載入題目。';
   const c=questions.filter(q=>explanations[q.id]).length;
   $('#explainCount').textContent=`${c} / ${questions.length}`;
   $('#explainProgress').style.width=(questions.length?c/questions.length*100:0)+'%';
@@ -265,7 +265,7 @@ function updateStats(){
 function updateReview(){$('#wrongSummary').textContent=`目前 ${wrong.size} 題錯題`;$('#favoriteSummary').textContent=`目前 ${favorites.size} 題收藏`}
 
 $('#startQuiz').onclick=()=>startQuiz('normal');$('#practiceWrong').onclick=()=>startQuiz('wrong');$('#practiceFavorite').onclick=()=>startQuiz('fav');
-function startQuiz(mode){let pool;if(mode==='wrong')pool=questions.filter(q=>wrong.has(q.id));else if(mode==='fav')pool=questions.filter(q=>favorites.has(q.id));else pool=questions.filter(q=>selected.has(q.chapter));if(!pool.length)return alert('目前沒有可練習的題目。請先選章節或匯入完整題庫。');if($('#questionOrder').value==='random')pool=shuffle(pool);else pool=pool.slice().sort((a,b)=>a.chapter-b.chapter||a.num-b.num);const amount=$('#questionAmount').value;if(amount!=='all')pool=pool.slice(0,+amount);quiz=pool;qIndex=0;answers=new Map();$('#quizCard').classList.remove('hidden');$('#quizResult').classList.add('hidden');renderQuestion();$('#quizCard').scrollIntoView({behavior:'smooth'})}
+function startQuiz(mode){let pool;if(mode==='wrong')pool=questions.filter(q=>wrong.has(q.id));else if(mode==='fav')pool=questions.filter(q=>favorites.has(q.id));else pool=questions.filter(q=>selected.has(q.chapter));if(!pool.length)return alert(questions.length<600?'完整題庫仍在自動載入，請等幾秒再試。':'目前沒有可練習的題目，請重新選擇章節。');if($('#questionOrder').value==='random')pool=shuffle(pool);else pool=pool.slice().sort((a,b)=>a.chapter-b.chapter||a.num-b.num);const amount=$('#questionAmount').value;if(amount!=='all')pool=pool.slice(0,+amount);quiz=pool;qIndex=0;answers=new Map();$('#quizCard').classList.remove('hidden');$('#quizResult').classList.add('hidden');renderQuestion();$('#quizCard').scrollIntoView({behavior:'smooth'})}
 function renderQuestion(){const q=quiz[qIndex];if(!q)return;$('#quizMeta').textContent=`第 ${q.chapter} 章 · 第 ${q.num} 題 · ${qIndex+1}/${quiz.length}`;$('#quizQuestion').textContent=q.question;const box=$('#quizOptions');box.innerHTML='';const chosen=answers.get(q.id);q.options.forEach((o,i)=>{const n=i+1,b=document.createElement('button');b.className='option';b.innerHTML=`<b>${['①','②','③','④'][i]}</b> ${esc(o||'（圖示選項，請對照原題 PDF）')}`;if(chosen){b.disabled=true;if(n===q.answer)b.classList.add('correct');if(n===chosen&&chosen!==q.answer)b.classList.add('wrong')}b.onclick=()=>{if(!answers.has(q.id)){answers.set(q.id,n);if(n!==q.answer)wrong.add(q.id);else wrong.delete(q.id);persistSets();renderQuestion()}};box.appendChild(b)});const ans=$('#answerPanel'),exp=$('#explanationPanel');if(chosen){ans.classList.remove('hidden');ans.innerHTML=`${chosen===q.answer?'答對。':'答錯。'} 正確答案：<b>${['①','②','③','④'][q.answer-1]} ${esc(q.options[q.answer-1]||'')}</b>`;exp.classList.remove('hidden');exp.innerHTML=explanations[q.id]?formatExplanation(explanations[q.id]):'<h3>完整詳解</h3><p>這題尚未預先生成 AI 詳解。可按「問 AI」針對本題解釋，或到首頁執行「預先生成全部詳解」。</p>'}else{ans.classList.add('hidden');exp.classList.add('hidden')}$('#favoriteQuestion').textContent=favorites.has(q.id)?'★ 已收藏':'☆ 收藏';$('#prevQuestion').disabled=qIndex===0;$('#nextQuestion').textContent=qIndex===quiz.length-1?'交卷':'下一題'}
 $('#prevQuestion').onclick=()=>{if(qIndex>0){qIndex--;renderQuestion()}};$('#nextQuestion').onclick=()=>{if(qIndex===quiz.length-1)return finishQuiz();qIndex++;renderQuestion()};$('#exitQuiz').onclick=()=>$('#quizCard').classList.add('hidden');$('#backFromResult').onclick=()=>$('#quizResult').classList.add('hidden');
 $('#favoriteQuestion').onclick=()=>{const q=quiz[qIndex];favorites.has(q.id)?favorites.delete(q.id):favorites.add(q.id);persistSets();renderQuestion()};
@@ -310,7 +310,7 @@ async function autoSyncOfficialBank(){
     status.textContent=`已從官方題庫自動同步 ${questions.length} 題並存在本機。`;
   }catch(e){
     console.warn('official bank auto sync failed',e);
-    status.textContent=(original||'')+' 自動同步未完成，可按「匯入官方 PDF」。';
+    status.textContent='完整題庫自動載入失敗，請重新整理頁面再試。';
   }
 }
 function parseOfficialText(raw){let text=raw.replace(/Page\s+\d+\s+of\s+46/g,' ').replace(/\s+/g,' ').trim();const markers=chapterDefs.map(d=>text.search(new RegExp(`工作項目\\s*0?${d.id}\\s*[：:]\\s*${d.name}`)));let out=[];if(markers.every(x=>x>=0)){chapterDefs.forEach((d,i)=>{const seg=text.slice(markers[i],i<4?markers[i+1]:text.length);out.push(...parseQuestions(seg,d.id,d.count))})}else{const all=parseQuestions(text,1,9999);if(all.length>=600){let off=0;for(const d of chapterDefs){all.slice(off,off+d.count).forEach((q,i)=>out.push({...q,id:`${d.id}-${i+1}`,chapter:d.id,num:i+1}));off+=d.count}}}return out}
@@ -319,7 +319,7 @@ $('#exportBank').onclick=()=>downloadJson('prepress-question-bank.json',{questio
 $('#exportExplanations').onclick=()=>downloadJson('prepress-explanations.json',explanations);
 
 $('#openAiSettings').onclick=()=>$('#aiDialog').showModal();$('#closeAiSettings').onclick=()=>$('#aiDialog').close();
-function loadAiSettings(){const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');$('#aiMode').value=s.mode||'puter';$('#providerPreset').value=s.provider||'custom';$('#proxyUrl').value=s.proxyUrl||'/api/ai';$('#baseUrl').value=s.baseUrl||providerPresets[s.provider||'custom']?.base||'';$('#modelName').value=s.model||'qwen/qwen3.7-max';$('#rememberKey').checked=!!s.rememberKey;$('#apiKey').value=s.rememberKey?(s.apiKey||''):(sessionStorage.getItem('prepress_api_key')||'');updateAiFormState()}
+function loadAiSettings(){if(!localStorage.getItem('prepress_ai_free_migrated_v1')){localStorage.setItem('prepress_ai_settings',JSON.stringify({mode:'puter',provider:'custom',model:'qwen/qwen3.7-max'}));localStorage.setItem('prepress_ai_free_migrated_v1','1')}const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');$('#aiMode').value=s.mode||'puter';$('#providerPreset').value=s.provider||'custom';$('#proxyUrl').value=s.proxyUrl||'/api/ai';$('#baseUrl').value=s.baseUrl||providerPresets[s.provider||'custom']?.base||'';$('#modelName').value=s.model||'qwen/qwen3.7-max';$('#rememberKey').checked=!!s.rememberKey;$('#apiKey').value=s.rememberKey?(s.apiKey||''):(sessionStorage.getItem('prepress_api_key')||'');updateAiFormState()}
 function saveAiSettings(){const s={mode:$('#aiMode').value,provider:$('#providerPreset').value,proxyUrl:$('#proxyUrl').value.trim(),baseUrl:$('#baseUrl').value.trim(),model:$('#modelName').value.trim()||'qwen/qwen3.7-max',rememberKey:$('#rememberKey').checked};const key=$('#apiKey').value.trim();if(s.rememberKey)s.apiKey=key;else{sessionStorage.setItem('prepress_api_key',key);delete s.apiKey}localStorage.setItem('prepress_ai_settings',JSON.stringify(s));updateAiBadge();return {...s,apiKey:key}}
 function updateAiFormState(){const mode=$('#aiMode').value;const direct=mode==='direct',proxy=mode==='proxy',puter=mode==='puter';$('#providerPreset').disabled=!direct;$('#baseUrl').disabled=!direct;$('#apiKey').disabled=!direct;$('#rememberKey').disabled=!direct;$('#proxyUrl').disabled=!proxy;$('#modelName').disabled=false;$('#modelName').placeholder=puter?'Puter 模型，例如 qwen/qwen3.7-max':'例如供應商提供的模型 ID'}
 $('#aiMode').onchange=updateAiFormState;
