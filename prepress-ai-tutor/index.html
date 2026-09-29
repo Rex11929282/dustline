@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#08111f" />
+  <title>印前製程丙級｜AI 學習題庫</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;color:#eef4ff;background:#08111f;color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-width:320px;min-height:100vh;background:radial-gradient(circle at 50% -10%,#17345e 0,#0b1729 34%,#08111f 72%)}button,input,select,textarea{font:inherit}.topbar{max-width:1100px;margin:auto;padding:24px 16px 6px;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.topbar h1{font-size:clamp(32px,8vw,52px);margin:4px 0 8px}.topbar p,.lead{color:#9eafc7;line-height:1.65;margin:0}.eyebrow{color:#8fb9ff;font-weight:850;font-size:12px;letter-spacing:.08em}.shell{max-width:1100px;margin:auto;padding:0 16px 64px}.hero-grid,.review-grid{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0}@media(min-width:720px){.hero-grid,.review-grid{grid-template-columns:1fr 1fr}}.hero-card,.panel{background:rgba(14,27,46,.96);border:1px solid #264363;border-radius:18px;padding:16px;box-shadow:0 18px 45px rgba(0,0,0,.24)}.hero-card strong{display:block;font-size:24px;margin:6px 0}.hero-card p{color:#9eafc7;line-height:1.6;margin:0}.tag,.badge{display:inline-block;padding:5px 8px;border:1px solid #31537b;border-radius:999px;color:#a9cfff;font-size:11px}.row{display:flex;gap:9px;align-items:center;margin-top:14px}.wrap{flex-wrap:wrap}.button,button{border-radius:11px;border:1px solid transparent;padding:10px 13px;font-weight:750;cursor:pointer}.primary{background:#79aaff;color:#06101f}.ghost{background:#12233a;color:#e9f1ff;border-color:#2c486a}.compact{padding:7px 10px;font-size:12px}.mini-progress{height:7px;background:#162942;border-radius:999px;overflow:hidden;margin-top:12px}.mini-progress span{display:block;height:100%;width:0;background:#79aaff;transition:width .2s}.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;position:sticky;top:0;z-index:20;background:rgba(8,17,31,.92);backdrop-filter:blur(14px);padding:10px 0}.tabs button{background:#102039;color:#91a5bf;border-color:#233e5f}.tabs button.active{background:#1a3963;color:#fff;border-color:#6e9fe2}.view{display:none}.view.active{display:block}.section-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;margin:20px 2px 12px}.section-head h2{margin:4px 0 0}.section-head p{color:#8fa1ba;max-width:520px;margin:0;line-height:1.55}.compact-head{margin:0 0 12px;align-items:flex-start}.unit-grid{display:grid;grid-template-columns:1fr;gap:10px}@media(min-width:720px){.unit-grid{grid-template-columns:repeat(5,1fr)}}.unit-card{background:linear-gradient(180deg,#142b4a,#0e1c30);border:1px solid #31547b;border-radius:16px;padding:15px;text-align:left;color:#eef4ff;min-height:180px}.unit-card b{display:block;font-size:17px;margin:8px 0}.unit-card p{color:#9fb0c8;font-size:13px;line-height:1.55}.unit-card small{color:#8fb9ff}.quick-panel{margin-top:14px}.quick-list{display:grid;gap:7px}.quick-list>div{display:grid;grid-template-columns:26px 1fr;gap:9px;background:#0a182a;border-radius:11px;padding:9px}.quick-list strong{width:23px;height:23px;border-radius:50%;display:grid;place-items:center;background:#1c3b65;color:#bdd5f7;font-size:11px}.quick-list span{line-height:1.55;color:#c4d1e2;font-size:13px}.chapter-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}@media(min-width:720px){.chapter-grid{grid-template-columns:repeat(5,1fr)}}.chapter-btn{background:#0e1c30;color:#eaf2ff;border-color:#29496d;text-align:left;min-height:105px}.chapter-btn.active{background:#17365e;border-color:#78aaff}.chapter-btn span,.chapter-btn small{display:block;color:#91a8c4;font-size:11px}.chapter-btn b{display:block;margin:6px 0}select,input,textarea{background:#0b192b;color:#edf4ff;border:1px solid #2b486c;border-radius:10px;padding:10px}.options{display:grid;gap:9px}.option{width:100%;text-align:left;background:#0e1c30;color:#edf4ff;border-color:#2b486c;line-height:1.55}.option.correct{background:#113b2c;border-color:#3a9d76}.option.wrong{background:#3a1c25;border-color:#bd5965}.quiz-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.quiz-top h2{line-height:1.55;margin-top:7px}.answer-panel,.explanation,.notice{margin-top:12px;padding:12px;border-radius:12px;background:#0a182a;border:1px solid #2c496c;color:#cbd8ea;line-height:1.7}.explanation{border-color:#39638f}.explanation h3{color:#9fcbff}.hidden{display:none!important}.center{text-align:center}.score{font-size:58px;font-weight:900}.teacher-panel{min-height:500px}.chat{height:360px;overflow:auto;display:grid;gap:10px;padding:8px 0}.bubble{max-width:86%;padding:11px 12px;border-radius:14px;line-height:1.6;white-space:pre-wrap}.bubble.user{justify-self:end;background:#1b4d82}.bubble.ai{justify-self:start;background:#10243e;border:1px solid #2b4d73}.chat-input{display:grid;grid-template-columns:1fr auto;gap:8px}.chat-input textarea{resize:vertical}.modal{width:min(820px,calc(100% - 24px));max-height:88vh;overflow:auto;background:#0b1626;color:#eef4ff;border:1px solid #35587e;border-radius:18px;padding:16px}.modal::backdrop{background:rgba(0,0,0,.68);backdrop-filter:blur(5px)}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.form-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}@media(min-width:640px){.form-grid{grid-template-columns:1fr 1fr}}label{display:grid;gap:6px;color:#aebbd0;font-size:13px}.check{display:flex;align-items:center}.study-section{margin-top:14px;padding:14px;background:#0a182a;border:1px solid #29496c;border-radius:14px}.study-section ul{padding-left:20px;line-height:1.7;color:#c7d5e7}.topic{border:1px solid #29496c;border-radius:12px;margin-top:9px;overflow:hidden}.topic summary{padding:12px;background:#10213a;cursor:pointer}.topic summary b,.topic summary small{display:block}.topic summary small{color:#91a4bd;margin-top:4px}.topic-body{padding:12px;line-height:1.7;color:#c7d5e7}.study-note{margin-top:8px;padding:9px 10px;background:#112943;border-left:3px solid #6ea3e7;border-radius:7px}.study-note.warn{border-left-color:#d99a52;background:#2a2215}.study-note.mem{border-left-color:#54b68a;background:#12281f}@media(max-width:620px){.tabs{grid-template-columns:repeat(2,1fr)}.topbar{align-items:flex-start}.topbar p{font-size:13px}.chat-input{grid-template-columns:1fr}.row.quiz-nav{display:grid;grid-template-columns:1fr 1fr}.section-head{display:block}.section-head p{margin-top:8px}}
+
+.teacher-tools{display:flex;gap:7px;flex-wrap:wrap;margin:4px 0 8px}.microcopy{color:#7f93ad;font-size:12px;line-height:1.55}.status-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.status-ok{color:#9ce0bd}.status-warn{color:#f2c987}.status-bad{color:#f5a7ae}.button.ghost{display:inline-flex;align-items:center;justify-content:center;background:#12233a;color:#e9f1ff;border:1px solid #2c486a;text-decoration:none}.hero-card .row{flex-wrap:wrap}.progress-label{font-size:12px;color:#8fa3bc;margin-top:7px}.provider-hint{font-size:12px;color:#8498b3;margin-top:-2px}.explanation p{margin:.35em 0}.explanation strong{color:#a8d2ff}@media(max-width:620px){.hero-card .row>*{flex:1 1 140px}.teacher-tools{display:grid;grid-template-columns:1fr 1fr}}
+
+</style>
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">19101 · 印前製程－圖文組版項</div>
+        <h1>AI 學習題庫</h1>
+        <p>完整 1～5 單元複習、660 題同步、錯題、收藏、AI 詳解與免費 AI 老師。</p>
+      </div>
+      <button id="openAiSettings" class="ghost compact">AI：免費免 Key</button>
+    </header>
+
+    <main class="shell">
+      <section class="hero-grid">
+        <article class="hero-card">
+          <span class="tag">題庫</span>
+          <strong id="bankCount">範例題 10 題</strong>
+          <p id="bankStatus">可先試用；匯入官方 PDF 後自動切成 1～5 章。</p>
+          <div class="row">
+            <label class="button primary" for="pdfInput">匯入官方 PDF</label>
+            <input id="pdfInput" type="file" accept="application/pdf" hidden />
+            <button id="exportBank" class="ghost">匯出題庫 JSON</button>
+            <label class="button ghost" for="bankJsonInput">匯入題庫 JSON</label>
+            <input id="bankJsonInput" type="file" accept="application/json,.json" hidden />
+          </div>
+        </article>
+        <article class="hero-card">
+          <span class="tag">AI 詳解庫</span>
+          <strong id="explainCount">0 / 10</strong>
+          <p>可以一次預先生成全部題目的完整詳解，之後直接從本機資料庫讀取。</p>
+          <div class="row">
+            <button id="preGenerate" class="primary">預先生成全部詳解</button>
+            <button id="pauseGenerate" class="ghost" disabled>暫停</button>
+            <button id="exportExplanations" class="ghost">匯出詳解庫</button>
+            <label class="button ghost" for="explanationInput">匯入詳解庫</label>
+            <input id="explanationInput" type="file" accept="application/json,.json" hidden />
+          </div>
+          <div class="mini-progress"><span id="explainProgress"></span></div>
+        </article>
+      </section>
+
+      <nav class="tabs" aria-label="主要功能">
+        <button data-tab="study" class="active">完整學習</button>
+        <button data-tab="quiz">題庫練習</button>
+        <button data-tab="review">錯題 / 收藏</button>
+        <button data-tab="teacher">AI 老師</button>
+      </nav>
+
+      <section id="study" class="view active">
+        <div class="section-head">
+          <div><div class="eyebrow">電子講義</div><h2>1～5 單元完整複習</h2></div>
+          <p>每章包含學習目標、必背核心、觀念、公式、例子、常見陷阱與快速記法。</p>
+        </div>
+        <div id="unitCards" class="unit-grid"></div>
+        <article class="panel quick-panel">
+          <h3>全科考前快速總整理</h3>
+          <div id="quickReview" class="quick-list"></div>
+        </article>
+      </section>
+
+      <section id="quiz" class="view">
+        <article class="panel">
+          <div class="section-head compact-head"><div><div class="eyebrow">練習設定</div><h2>選擇章節</h2></div><span id="selectedInfo">第 1 章</span></div>
+          <div id="chapterChooser" class="chapter-grid"></div>
+          <div class="row wrap">
+            <button id="selectAll" class="ghost">全選</button>
+            <button id="clearAll" class="ghost">清除</button>
+            <select id="questionAmount" aria-label="題數">
+              <option value="10">10 題</option><option value="20" selected>20 題</option><option value="50">50 題</option><option value="all">全部</option>
+            </select>
+            <select id="questionOrder" aria-label="順序"><option value="random">隨機</option><option value="normal">照題號</option></select>
+            <button id="startQuiz" class="primary">開始練習</button>
+          </div>
+        </article>
+        <article id="quizCard" class="panel hidden">
+          <div class="quiz-top"><div><div id="quizMeta" class="eyebrow"></div><h2 id="quizQuestion"></h2></div><button id="exitQuiz" class="ghost compact">退出</button></div>
+          <div id="quizOptions" class="options"></div>
+          <div id="answerPanel" class="answer-panel hidden"></div>
+          <div id="explanationPanel" class="explanation hidden"></div>
+          <div class="row quiz-nav">
+            <button id="favoriteQuestion" class="ghost">☆ 收藏</button>
+            <button id="askAiQuestion" class="ghost">問 AI</button>
+            <button id="prevQuestion" class="ghost">上一題</button>
+            <button id="nextQuestion" class="primary">下一題</button>
+          </div>
+        </article>
+        <article id="quizResult" class="panel hidden center"><div class="eyebrow">本次成績</div><div id="score" class="score">0%</div><p id="scoreDetail"></p><button id="backFromResult" class="primary">回題庫</button></article>
+      </section>
+
+      <section id="review" class="view">
+        <div class="review-grid"><article class="panel"><h2>錯題</h2><p id="wrongSummary"></p><button id="practiceWrong" class="primary">重練錯題</button></article><article class="panel"><h2>收藏</h2><p id="favoriteSummary"></p><button id="practiceFavorite" class="primary">練收藏題</button></article></div>
+      </section>
+
+      <section id="teacher" class="view">
+        <article class="panel teacher-panel">
+          <div class="section-head compact-head"><div><div class="eyebrow">AI 老師</div><h2>直接問印前製程</h2></div><span id="aiStatusBadge" class="badge">免費 AI</span></div>
+          <div class="teacher-tools">
+            <button class="ghost compact teacher-quick" data-prompt="請用最簡單的方式解釋 PPI、DPI、LPI，最後出一題考我。">PPI / DPI / LPI</button>
+            <button class="ghost compact teacher-quick" data-prompt="請幫我複習 RGB、CMYK、Lab、ICC Profile，整理成考試會考的重點。">色彩模式</button>
+            <button class="ghost compact teacher-quick" data-prompt="請幫我複習 Overprint、Knockout、Trapping，先講原理再用例子。">疊印 / 陷印</button>
+            <button class="ghost compact teacher-quick" data-prompt="請根據印前製程丙級的範圍，出一題四選一題目給我，先不要公布答案。">出題考我</button>
+          </div>
+          <div id="chat" class="chat"></div>
+          <div class="chat-input"><textarea id="teacherPrompt" rows="3" placeholder="例如：PPI、DPI、LPI 到底差在哪？請用最簡單的方法教我。"></textarea><button id="sendTeacher" class="primary">送出</button></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="studyDialog" class="modal"><div class="modal-head"><div><div id="studyUnitNo" class="eyebrow"></div><h2 id="studyUnitTitle"></h2></div><button id="closeStudyDialog" class="ghost compact">關閉</button></div><p id="studyUnitSubtitle" class="lead"></p><div id="studyUnitContent"></div></dialog>
+
+  <dialog id="aiDialog" class="modal settings-modal"><div class="modal-head"><div><div class="eyebrow">AI CONNECTOR</div><h2>AI 接入設定</h2></div><button id="closeAiSettings" class="ghost compact">關閉</button></div>
+    <p class="notice"><b>預設使用 Puter 免費免 Key AI。</b> 不需要填 API Key 或架設 AI 後端；第一次使用可能會跳出 Puter 登入/授權。若你之後要換自己的模型，也保留安全 Proxy 與 BYOK 模式。</p>
+    <div class="form-grid">
+      <label>模式<select id="aiMode"><option value="puter">Puter 免費免 Key AI（預設）</option><option value="proxy">安全 Proxy（進階）</option><option value="direct">直接 BYOK（進階）</option></select></label>
+      <label>供應商預設<select id="providerPreset"><option value="custom">自訂 OpenAI-compatible</option><option value="openai">OpenAI</option><option value="openrouter">OpenRouter</option><option value="deepseek">DeepSeek</option><option value="gemini">Google Gemini（OpenAI 相容端點）</option></select></label>
+      <label>Proxy URL<input id="proxyUrl" value="/api/ai" placeholder="/api/ai 或 https://..." /></label>
+      <label>OpenAI-compatible Base URL<input id="baseUrl" placeholder="https://provider.example/v1" /></label>
+      <label>Model<input id="modelName" value="qwen/qwen3.7-max" placeholder="Puter 預設 qwen/qwen3.7-max" /></label>
+      <label>API Key<input id="apiKey" type="password" autocomplete="off" placeholder="只在 direct 模式使用" /></label>
+      <label class="check"><input id="rememberKey" type="checkbox" /> 記住 API Key（不建議公用裝置）</label>
+    </div>
+    <div class="row wrap"><button id="saveAiSettings" class="primary">儲存設定</button><button id="testAi" class="ghost">測試連線</button><button id="clearAiKey" class="ghost">清除本機 Key</button></div>
+    <p class="microcopy">Puter 模式免 API Key。Puter 採使用者授權模式，平台本身的帳戶/用量規則由 Puter 決定。Proxy/BYOK 僅供進階替換模型。</p>
+    <div id="aiTestResult" class="notice hidden"></div>
+  </dialog>
+
+  <dialog id="importDialog" class="modal"><div class="modal-head"><div><div class="eyebrow">題庫匯入</div><h2>正在解析官方 PDF</h2></div></div><p id="importStatus">準備中…</p><div class="mini-progress"><span id="importProgress"></span></div></dialog>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous"></script>
+  <script src="https://js.puter.com/v2/"></script>
+  <script type="module">
+const units=[
+{id:1,name:'原稿判讀與處理',subtitle:'先判斷原稿、尺寸、影像、色彩與檔案是否適合後續印刷。',goals:['熟悉紙張尺寸與出血、完成尺寸','分辨點陣與向量、原稿種類','理解 PPI/DPI/LPI 與縮放','掌握 RGB/CMYK、色域與常見檔案格式'],must:['A4=210×297mm；A3=297×420mm；A3 對折=A4','有效PPI≈原始PPI÷放大倍率','螢幕以RGB為主，四色印刷以CMYK為主','背景做到紙邊就要出血；重要文字要內縮'],topics:[
+{t:'紙張尺寸、開數與完成尺寸',s:'尺寸題先分清楚「紙張本身」與「裁切後成品」。',p:['ISO A系列長寬比固定，長邊對折得到下一號尺寸。','A0面積為1平方公尺；A3為297×420mm，A4為210×297mm。','完成尺寸是裁切後實際成品；完稿尺寸通常還包含出血。'],e:'A4 四周各3mm出血，版面尺寸會變成216×303mm。',w:'不要把含出血尺寸直接當完成尺寸。',m:'A3→A4→A5，每次長邊對半。'},
+{t:'紙張重量、基重與紙種',s:'重量、厚度、表面性質是不同概念。',p:['基重g/m²表示1平方公尺紙張的重量。','道林紙屬非塗佈紙；銅版紙經塗佈與壓光，表面較平滑。','紙紋方向會影響折紙、裝訂與爆裂。'],w:'相同基重的不同紙種，厚度不一定相同。',m:'紙種看表面，基重看重量。'},
+{t:'連續調、半色調與網點',s:'印刷以網點模擬深淺。',p:['照片是連續調原稿；印刷輸出會轉成半色調網點。','已印刷的網點稿再次掃描容易產生摩爾紋。','去網紋與適當掃描設定可降低干涉。'],m:'照片連續調，印刷靠網點變半色調。'},
+{t:'點陣圖與向量圖',s:'點陣看像素，向量看路徑。',p:['點陣圖放大過度會模糊或鋸齒。','向量圖以節點與路徑描述，縮放通常不因尺寸本身失真。','照片適合點陣；Logo、圖標、外框線常適合向量。'],w:'把低解析JPEG放進Illustrator不會自動變成真正向量。',m:'像素＝點陣；路徑＝向量。'},
+{t:'PPI、DPI、LPI與縮放',s:'三個單位最容易混淆。',p:['PPI描述影像像素密度；DPI常描述輸出設備點數；LPI描述傳統網屏線數。','影像所需像素≈輸出尺寸(英吋)×PPI。','放大200%時，有效PPI約剩原本的一半。'],e:'300PPI影像放大200%→有效PPI約150。',m:'圖檔PPI、設備DPI、網屏LPI。'},
+{t:'RGB、CMYK與色域',s:'模式要配合顯示或印刷用途。',p:['RGB為加色模式，常見於螢幕與相機。','CMYK為減色印刷模式。','RGB部分鮮豔色超出CMYK色域，轉換後可能變暗或降低飽和。','ICC Profile用來描述裝置色彩特性並進行色彩轉換。'],m:'螢幕RGB，四色印刷CMYK。'},
+{t:'位元深度、通道與容量',s:'像素、通道、位元越多，資料量通常越大。',p:['8-bit灰階可表示256階。','RGB通常有3個色彩通道，CMYK有4個。','未壓縮檔案容量可由像素數×每像素位元組估算。'],m:'像素多＋通道多＋位元高＝容量大。'},
+{t:'PSD、TIFF、JPEG、PNG、PDF',s:'格式要看用途，不要只背副檔名。',p:['PSD適合保留圖層與Photoshop編修資訊。','TIFF常用於高品質印前影像。','JPEG為失真壓縮，反覆存檔會累積劣化。','PDF具有跨平台與交換便利性，是常見印前交付格式。'],m:'要編修留PSD；高品質影像看TIFF；JPEG小但會失真。'},
+{t:'裁切、出血與安全範圍',s:'裁切有誤差，所以滿版背景必須超出裁切線。',p:['裁切線＝成品切下位置。','出血＝裁切線外的延伸區。','重要文字、Logo應離裁切線保留安全距離。','Crop Mark、Bleed、Register Mark用途不同。'],m:'背景出血，文字內縮。'},
+{t:'原稿判讀固定流程',s:'任何原稿題都能用同一順序檢查。',p:['先看用途與完成尺寸。','再看影像類型、解析度與縮放。','再看色彩模式、檔案格式與壓縮。','最後確認出血、裁切與輸出條件。'],m:'尺寸→類型→解析→色彩→格式→出血。'}]},
+{id:2,name:'工具使用',subtitle:'了解掃描、顯示、量測工具與 Adobe 軟體的正確分工。',goals:['分辨掃描器、顯示器與色彩量測工具','掌握Photoshop、Illustrator、InDesign分工','理解校色、ICC與裝置管理','熟悉字型、連結、打包與備份'],must:['PS修圖、AI向量、ID組版','濃度計量印刷濃度；色度/分光量色彩','螢幕校正不是憑肉眼調到好看','打包前要確認字型、連結與版本'],topics:[
+{t:'掃描器與數位輸入',s:'把實體原稿轉成數位影像。',p:['掃描解析度依原稿類型、放大倍率與輸出需求設定。','線稿常需較高解析度；照片要兼顧階調與檔案容量。','掃描印刷品要注意網點與摩爾紋。'],m:'掃描不是越高越好，要符合輸出需求。'},
+{t:'顯示器與校色',s:'穩定顯示才有可靠的色彩判斷。',p:['亮度、白點、Gamma、環境光都影響視覺。','校色器量測後建立Profile。','螢幕色域與印刷色域不同。'],w:'只靠肉眼調RGB不是專業校色。'},
+{t:'濃度計、色度計、分光光度計',s:'題目先看「要量什麼」。',p:['濃度計常用於墨色濃度與網點控制。','色度計量測色彩刺激值。','分光光度計取得波長資訊，可進一步計算色彩數據。'],m:'濃度看墨量；色度看色；分光看光譜。'},
+{t:'Photoshop核心用途',s:'點陣影像處理主力。',p:['裁切、尺寸、曲線、色階、去背、修圖、銳利化、模式轉換。','圖層與遮色片有利非破壞編修。','影像尺寸、畫布尺寸、重新取樣是不同概念。'],m:'PS＝像素修圖。'},
+{t:'Illustrator核心用途',s:'向量路徑、節點、填色與描邊。',p:['鋼筆工具建立錨點與貝茲曲線。','填色與描邊是獨立屬性。','文字可保留字型或建立外框。','內嵌點陣影像仍受解析度限制。'],m:'AI＝路徑與節點。'},
+{t:'InDesign核心用途',s:'多頁文件與長文排版。',p:['文字框、圖片框、段落樣式、字元樣式、母版頁。','置入圖片通常是連結，移動原檔可能造成缺連結。','Preflight可檢查缺字型、低解析、缺連結等問題。'],m:'ID＝多頁組版。'},
+{t:'字型與字型管理',s:'缺字型會直接改變版面。',p:['替代字型可能改字寬、換行與頁數。','OpenType支援跨平台與較完整字元。','轉外框可避部分缺字型問題，但失去可編輯性。'],w:'轉外框不是所有情況的萬能解法。'},
+{t:'選取、遮色片與路徑',s:'三者都在控制「哪裡被處理」。',p:['選取通常是暫時像素範圍。','遮色片可非破壞控制顯示與隱藏。','路徑是向量曲線，適合精準硬邊去背。'],m:'選取暫時；遮罩可反悔；路徑最精準。'},
+{t:'儲存、版本與備份',s:'避免連結遺失與版本混亂。',p:['原稿、工作檔、輸出檔分開。','使用清楚版本名稱。','重要專案至少有另一份獨立備份。','交付前使用Package/封裝整理依賴。'],m:'原檔不覆蓋，交付前打包。'},
+{t:'工具題快速判斷',s:'先看任務，再選工具。',p:['像素修圖→Photoshop。','Logo/向量→Illustrator。','多頁排版→InDesign。','色彩量測→色度/分光；印刷濃度→濃度計。'],m:'不要背軟體名字，先看工作內容。'}]},
+{id:3,name:'版面資料',subtitle:'掌握字、行、欄、頁、色彩與版面規格。',goals:['熟悉pt、pica、mm、inch','分清Leading、Tracking、Kerning','理解版心、邊界、欄與格線','掌握字型分類、色票、圖片框與連結'],must:['72pt=1inch；12pt=1pica；1inch=25.4mm','Leading行距、Tracking整段字距、Kerning字偶距','明體類似Serif；黑體類似Sans Serif','框與內容是兩層概念'],topics:[
+{t:'pt、pica、mm、inch',s:'排版單位是常見計算題。',p:['72pt=1inch。','12pt=1pica，所以6pica=1inch。','1inch=25.4mm。'],e:'36pt=0.5inch；18pt=1.5pica。',m:'72pt一吋；12pt一pica。'},
+{t:'字級與視覺大小',s:'相同point不代表看起來一樣大。',p:['不同字型的x-height與字面率不同。','小字要優先可讀性。','細明體反白在印刷上容易因橫線太細而不清楚。'],w:'同樣10pt的兩種字型，視覺大小可以不同。'},
+{t:'明體、黑體、Serif與Sans Serif',s:'依筆畫結構分類。',p:['明體常見橫細豎粗與收筆裝飾。','黑體筆畫較均勻。','Serif有襯線，Sans Serif無襯線。'],m:'明體有腳；黑體較直。'},
+{t:'Leading、Tracking、Kerning',s:'三個名詞要徹底分清楚。',p:['Leading＝行與行的垂直距離。','Tracking＝一段文字整體字距。','Kerning＝特定兩字之間的字偶距。'],m:'Leading上下；Tracking整段；Kerning兩字。'},
+{t:'段落與對齊',s:'對齊方式會影響閱讀與空白節奏。',p:['左右齊會調整字詞間距填滿行寬。','段前段後應用樣式控制，不宜大量手打空格。','禁則與標點懸掛會影響中文排版品質。']},
+{t:'版心、邊界、欄與欄距',s:'先建立版面可用區域再放內容。',p:['Margin決定內容與紙邊距離。','Column組織內容；Gutter是欄間距。','行長過長會降低閱讀效率。'],m:'邊界管四周，欄管內容，欄距管欄中間。'},
+{t:'基線格線與模組格線',s:'格線建立跨頁一致性。',p:['基線格線讓多欄內文對齊。','模組格線讓圖文配置保持規律。','格線是秩序，不代表所有元素都必須僵硬貼齊。']},
+{t:'Process Color與Spot Color',s:'畫面看起來同色，不代表分色版相同。',p:['Process Color由CMYK網點組成。','Spot Color是獨立專色版。','同一專色名稱不一致可能被輸出成多個版。'],m:'四色＝Process；獨立油墨＝Spot。'},
+{t:'圖片框、文字框與連結',s:'框像窗戶，內容是窗外的東西。',p:['改框大小不一定等於縮放圖片內容。','文字溢流代表還有內容未顯示。','圖片連結要檢查是否遺失、修改或低解析。'],m:'框與內容分開想。'},
+{t:'版面資料檢查表',s:'固定順序降低漏項。',p:['頁面尺寸與方向。','字型、字級、行距與溢流。','圖片連結與有效解析度。','色票、專色、出血與裁切標記。'],m:'頁→字→圖→色→標記。'}]},
+{id:4,name:'組版處理',subtitle:'把文字、圖片、向量與色彩整理成真正可輸出的完整版面。',goals:['掌握尺寸、色階、曲線、銳利化與去背','熟悉路徑、圖層、樣式、母版與文字繞圖','理解Overprint、Knockout、Trapping','會做Preflight、Package與輸出前總檢'],must:['重新取樣才會改變像素數','遮色片：白顯黑藏','大量重複格式用樣式；每頁固定元素用母版','缺字、缺圖、低解析、錯色、沒出血是五大雷'],topics:[
+{t:'影像尺寸、畫布尺寸與重新取樣',s:'三個概念完全不同。',p:['影像尺寸涉及像素數與輸出尺寸。','畫布尺寸只改工作區。','重新取樣會新增或刪除像素。'],w:'把72PPI數字改成300PPI，不等於憑空增加真實細節。'},
+{t:'Levels與Curves',s:'都能調階調，但控制精細度不同。',p:['Levels快速設定黑點、白點與中間調。','Curves可以分區段做細緻調整。','過度調整可能造成高光或暗部截斷。'],m:'Levels三點快調；Curves曲線細調。'},
+{t:'銳利化、模糊與雜訊',s:'銳利化強化邊緣對比，不是創造不存在的細節。',p:['Unsharp Mask類方法加強邊緣對比。','過度銳利化會出現Halo。','降噪會犧牲部分細節。']},
+{t:'遮色片與去背',s:'精準去背同時要保留可修改性。',p:['硬邊物體適合路徑。','毛髮與半透明材質常需遮色片與邊緣精修。','黑遮白顯，灰色半透明。'],m:'白顯黑藏。'},
+{t:'路徑、錨點與貝茲曲線',s:'節點不是越多越好。',p:['節點過多會讓曲線不平順。','平滑點控制柄通常共線。','封閉路徑可形成填色區域。']},
+{t:'圖層、物件順序與群組',s:'很多版面錯誤其實是層級問題。',p:['上層物件遮住下層物件。','群組不等於合併。','透明度與混合模式會影響輸出。']},
+{t:'樣式、母版與長文件',s:'重複內容要系統化管理。',p:['段落樣式控制整段。','字元樣式控制局部。','母版適合頁碼與固定元素。'],m:'大量重複→樣式；每頁固定→母版。'},
+{t:'文字繞圖與圖文置入',s:'不要用空白硬推位置。',p:['繞圖距離要兼顧閱讀與視覺。','圖片框變動會讓文字重新流動。','剪裁路徑或Alpha可控制不規則繞圖。']},
+{t:'Overprint、Knockout與Trapping',s:'印前高頻難點。',p:['Knockout會在下方色版挖空。','Overprint讓上方色版直接疊印。','Trapping用極小擴張/收縮補償套印誤差。'],w:'白色物件誤設Overprint可能直接消失。'},
+{t:'Preflight與Package',s:'組版完成不代表能交印。',p:['檢查缺字型、缺連結、低解析、RGB/專色、溢流。','確認出血、裁切、透明、疊印與黑色設定。','打包時確保文件與連結版本一致。'],m:'缺字、缺圖、低解析、錯色、沒出血。'}]},
+{id:5,name:'輸出',subtitle:'把完成版面正確交給RIP、打樣、製版與印刷端。',goals:['理解PDF、PostScript與RIP','熟悉分色、網點、AM/FM、摩爾紋','掌握CTP、打樣、PDF/X與色彩管理','能依序排查輸出錯誤'],must:['RIP把頁面描述轉成設備可輸出的點陣資料','AM改網點大小；FM改網點密度','四色分色為C/M/Y/K；Spot另外出專色版','原檔→PDF→RIP→版→印刷'],topics:[
+{t:'PDF、PostScript與RIP',s:'檔案通常要經RIP才變成設備可輸出的資料。',p:['PostScript是頁面描述語言。','PDF是常見跨平台印前交換格式。','RIP將文字、向量、影像與分色轉成點陣。'],m:'頁面描述→RIP→點陣化→輸出。'},
+{t:'分色與四色印刷',s:'彩色稿要拆成印刷色版。',p:['標準四色為C、M、Y、K。','Spot Color會另出獨立版。','四色黑與單K黑的分色完全不同。'],w:'看起來是黑色，不代表只出K版。'},
+{t:'AM與FM網屏',s:'形成階調的方法不同。',p:['AM大致維持網點間距，改變網點大小。','FM網點大小較固定，以分布密度改變階調。','AM要特別注意網屏角度與摩爾紋。'],m:'AM改大小；FM改密度。'},
+{t:'網屏角度與摩爾紋',s:'規律網點互相干涉就可能產生花紋。',p:['不同色版使用不同網屏角度降低干涉。','掃描印刷品也可能因舊網點與新網點干涉。','去網紋可降低風險。'],m:'規律碰規律→摩爾紋。'},
+{t:'DPI、LPI與理論階調',s:'設備解析度要支撐使用的網屏線數。',p:['傳統AM可用(DPI÷LPI)²+1理解理論階調。','LPI越高，對設備與印刷條件要求越高。'],e:'2400DPI÷150LPI=16；理論階調約16²+1。'},
+{t:'網點擴大與補償',s:'紙上網點通常會比數位理想值變大。',p:['製版、印壓、油墨與紙張吸收都可能造成網點擴大。','網點擴大使中間調變深。','應依紙張與印刷條件做補償。']},
+{t:'CTP與製版',s:'Computer to Plate，數位資料直接製作印版。',p:['減少底片中間步驟。','仍需經過RIP、分色、網屏與拼版。','版材與曝光條件影響網點再現。'],m:'CTP是電腦到印版，不是直接到紙。'},
+{t:'打樣與色彩校樣',s:'正式印刷前預測內容與色彩。',p:['Soft Proof是螢幕模擬。','實體校樣需基於相符輸出條件與Profile。','打樣不只看顏色，也要看文字、頁碼、裁切與內容。']},
+{t:'PDF/X與輸出設定',s:'是規範，不是零錯誤保證。',p:['PDF/X限制部分印前必要資訊，提升交換可預期性。','仍要確認頁面框、出血、字型、色彩與透明。','最終以印刷廠提供的規格為準。'],m:'PDF/X是規範；印刷廠規格是交付標準。'},
+{t:'輸出故障排查順序',s:'從最容易驗證的環節往後找。',p:['先查原始文件。','再查PDF分色與頁面框。','再查RIP設定。','最後查製版與印刷條件。'],m:'原檔→PDF→RIP→版→印刷。'}]}
+];
+const quickReview=['點陣看像素、向量看路徑。','PPI是影像、DPI是設備、LPI是網屏。','放大影像會降低有效PPI。','螢幕RGB，四色印刷CMYK。','PS修圖、AI向量、ID組版。','72pt=1inch，12pt=1pica，1inch=25.4mm。','Leading行距、Tracking整段字距、Kerning字偶距。','背景做到紙邊就要出血，重要文字要內縮。','輸出前五大檢查：缺字、缺圖、低解析、錯色、沒出血。','AM改網點大小，FM改網點密度。','RIP把頁面描述轉成設備可輸出的點陣資料。','原檔→PDF→RIP→印版→印刷。'];
+
+const sampleQuestions=[
+{id:'1-1',chapter:1,num:1,answer:3,question:'下列哪一種尺寸的紙張面積最大？',options:['A4','B4','A3','8 開']},
+{id:'1-2',chapter:1,num:2,answer:1,question:'A4 紙張尺寸為？',options:['21 公分×29.7 公分','21.59 公分×27.94 公分','25.7 公分×36.4 公分','42 公分×29.7 公分']},
+{id:'1-3',chapter:1,num:3,answer:2,question:'四六版 8 開完成尺寸約為？',options:['21 公分×29.7 公分','26.5 公分×37.9 公分','29.7 公分×42 公分','37.9 公分×53 公分']},
+{id:'1-4',chapter:1,num:4,answer:2,question:'菊 16 開的書版在菊對開版上可以排多少頁？',options:['4 頁','8 頁','16 頁','32 頁']},
+{id:'1-5',chapter:1,num:5,answer:2,question:'A3 紙張長邊對折後會變成？',options:['A2','A4','B3','B4']},
+{id:'1-6',chapter:1,num:6,answer:3,question:'一般而言 120 磅的紙張，其厚度應是 60 磅的？',options:['1/3 倍','1/2 倍','2 倍','3 倍']},
+{id:'1-7',chapter:1,num:7,answer:3,question:'四六版 80 磅的紙張厚度大約等於基重多少的紙張厚度？',options:['63.3','73.8','84.4','95.0']},
+{id:'1-8',chapter:1,num:8,answer:1,question:'100g/m² 的紙張表示？',options:['一平方公尺的單張紙重量 100g','100 磅全開的單張紙重量','一平方公尺的 500 張紙重量 100g','100 磅對開的單張紙重量']},
+{id:'1-9',chapter:1,num:9,answer:3,question:'紙張的「令重」是指一令全紙的重量以何者為單位？',options:['毫','克','磅','公斤']},
+{id:'1-10',chapter:1,num:10,answer:4,question:'一張全開紙正反印有 1 至 16 頁，在裝訂過程中摺成一疊，我們稱之為？',options:['一令','一版','一車','一台']}
+];
+
+
+const $=s=>document.querySelector(s);const $$=s=>[...document.querySelectorAll(s)];
+const chapterDefs=[{id:1,name:'原稿判讀與處理',count:118},{id:2,name:'工具使用',count:103},{id:3,name:'版面資料',count:86},{id:4,name:'組版處理',count:183},{id:5,name:'輸出',count:170}];
+let questions=sampleQuestions.slice(),selected=new Set([1]),quiz=[],qIndex=0,answers=new Map(),generating=false,stopGeneration=false;
+let favorites=new Set(JSON.parse(localStorage.getItem('prepress_favs')||'[]'));let wrong=new Set(JSON.parse(localStorage.getItem('prepress_wrong')||'[]'));let explanations={};
+const providerPresets={
+  custom:{base:''},
+  openai:{base:'https://api.openai.com/v1'},
+  openrouter:{base:'https://openrouter.ai/api/v1'},
+  deepseek:{base:'https://api.deepseek.com'},
+  gemini:{base:'https://generativelanguage.googleapis.com/v1beta/openai'}
+};
+
+const dbReq=indexedDB.open('prepress-ai-v1',1);let db;
+dbReq.onupgradeneeded=()=>{const d=dbReq.result;if(!d.objectStoreNames.contains('kv'))d.createObjectStore('kv')};dbReq.onsuccess=async()=>{
+  db=dbReq.result;
+  const localQuestions=await idbGet('questions');
+  const localExplanations=await idbGet('explanations');
+  const staticBank=await loadStaticJson('./data/question-bank.json');
+  const staticExplanations=await loadStaticJson('./data/explanations.json');
+  const staticQuestions=Array.isArray(staticBank)?staticBank:(staticBank?.questions||[]);
+  questions=staticQuestions.length?staticQuestions:(localQuestions||sampleQuestions.slice());
+  explanations={...(staticExplanations&&typeof staticExplanations==='object'?staticExplanations:{}),...(localExplanations||{})};
+  renderAll();
+  if(questions.length<600)void autoSyncOfficialBank();
+};
+function idbGet(k){return new Promise(r=>{if(!db)return r(null);const t=db.transaction('kv','readonly').objectStore('kv').get(k);t.onsuccess=()=>r(t.result);t.onerror=()=>r(null)})}
+function idbSet(k,v){return new Promise((r,j)=>{if(!db)return r();const t=db.transaction('kv','readwrite').objectStore('kv').put(v,k);t.onsuccess=()=>r();t.onerror=()=>j(t.error)})}
+async function loadStaticJson(url){try{const r=await fetch(url,{cache:'no-store'});if(!r.ok)return null;return await r.json()}catch{return null}}
+
+function renderAll(){renderUnits();renderQuick();renderChapters();updateStats();updateReview();updateAiBadge()}
+function renderUnits(){const c=$('#unitCards');c.innerHTML='';for(const u of units){const b=document.createElement('button');b.className='unit-card';b.innerHTML=`<small>單元 ${u.id}</small><b>${esc(u.name)}</b><p>${esc(u.subtitle)}</p><small>${u.topics.length} 個完整主題</small>`;b.onclick=()=>openUnit(u);c.appendChild(b)}}
+function renderQuick(){$('#quickReview').innerHTML=quickReview.map((x,i)=>`<div><strong>${i+1}</strong><span>${esc(x)}</span></div>`).join('')}
+function openUnit(u){$('#studyUnitNo').textContent=`單元 ${u.id} · 完整複習`;$('#studyUnitTitle').textContent=u.name;$('#studyUnitSubtitle').textContent=u.subtitle;$('#studyUnitContent').innerHTML=`<section class="study-section"><h3>學習目標</h3><ul>${u.goals.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section><section class="study-section"><h3>必背核心</h3><ul>${u.must.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>${u.topics.map((t,i)=>`<details class="topic" ${i===0?'open':''}><summary><b>${esc(t.t)}</b><small>${esc(t.s)}</small></summary><div class="topic-body"><ul>${t.p.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${t.e?`<div class="study-note"><b>例子</b><br>${esc(t.e)}</div>`:''}${t.w?`<div class="study-note warn"><b>常見陷阱</b><br>${esc(t.w)}</div>`:''}${t.m?`<div class="study-note mem"><b>快速記法</b><br>${esc(t.m)}</div>`:''}</div></details>`).join('')}`;$('#studyDialog').showModal()}
+$('#closeStudyDialog').onclick=()=>$('#studyDialog').close();
+
+$$('.tabs button').forEach(b=>b.onclick=()=>{const t=b.dataset.tab;$$('.tabs button').forEach(x=>x.classList.toggle('active',x===b));$$('.view').forEach(v=>v.classList.toggle('active',v.id===t))});
+function renderChapters(){const c=$('#chapterChooser');c.innerHTML='';for(const d of chapterDefs){const n=questions.filter(q=>q.chapter===d.id).length;const b=document.createElement('button');b.className='chapter-btn'+(selected.has(d.id)?' active':'');b.innerHTML=`<span>第 ${d.id} 章</span><b>${d.name}</b><small>${n||d.count} 題</small>`;b.onclick=()=>{selected.has(d.id)?selected.delete(d.id):selected.add(d.id);renderChapters()};c.appendChild(b)}const count=[...selected].reduce((a,id)=>a+(questions.filter(q=>q.chapter===id).length||chapterDefs[id-1].count),0);$('#selectedInfo').textContent=selected.size?`已選 ${selected.size} 章 · ${count} 題`:'尚未選擇'}
+$('#selectAll').onclick=()=>{chapterDefs.forEach(x=>selected.add(x.id));renderChapters()};$('#clearAll').onclick=()=>{selected.clear();renderChapters()};
+function updateStats(){
+  $('#bankCount').textContent=questions.length>=600?`完整題庫 ${questions.length} 題`:`範例題 ${questions.length} 題`;
+  $('#bankStatus').textContent=questions.length>=600?'完整題庫已就緒；可直接練習，也可先生成全部詳解。':'可先試用；匯入官方 PDF 或題庫 JSON 後自動切成 1～5 章。';
+  const c=questions.filter(q=>explanations[q.id]).length;
+  $('#explainCount').textContent=`${c} / ${questions.length}`;
+  $('#explainProgress').style.width=(questions.length?c/questions.length*100:0)+'%';
+  $('#preGenerate').textContent=c>=questions.length&&questions.length?'詳解庫已完成':'預先生成全部詳解';
+}
+function updateReview(){$('#wrongSummary').textContent=`目前 ${wrong.size} 題錯題`;$('#favoriteSummary').textContent=`目前 ${favorites.size} 題收藏`}
+
+$('#startQuiz').onclick=()=>startQuiz('normal');$('#practiceWrong').onclick=()=>startQuiz('wrong');$('#practiceFavorite').onclick=()=>startQuiz('fav');
+function startQuiz(mode){let pool;if(mode==='wrong')pool=questions.filter(q=>wrong.has(q.id));else if(mode==='fav')pool=questions.filter(q=>favorites.has(q.id));else pool=questions.filter(q=>selected.has(q.chapter));if(!pool.length)return alert('目前沒有可練習的題目。請先選章節或匯入完整題庫。');if($('#questionOrder').value==='random')pool=shuffle(pool);else pool=pool.slice().sort((a,b)=>a.chapter-b.chapter||a.num-b.num);const amount=$('#questionAmount').value;if(amount!=='all')pool=pool.slice(0,+amount);quiz=pool;qIndex=0;answers=new Map();$('#quizCard').classList.remove('hidden');$('#quizResult').classList.add('hidden');renderQuestion();$('#quizCard').scrollIntoView({behavior:'smooth'})}
+function renderQuestion(){const q=quiz[qIndex];if(!q)return;$('#quizMeta').textContent=`第 ${q.chapter} 章 · 第 ${q.num} 題 · ${qIndex+1}/${quiz.length}`;$('#quizQuestion').textContent=q.question;const box=$('#quizOptions');box.innerHTML='';const chosen=answers.get(q.id);q.options.forEach((o,i)=>{const n=i+1,b=document.createElement('button');b.className='option';b.innerHTML=`<b>${['①','②','③','④'][i]}</b> ${esc(o||'（圖示選項，請對照原題 PDF）')}`;if(chosen){b.disabled=true;if(n===q.answer)b.classList.add('correct');if(n===chosen&&chosen!==q.answer)b.classList.add('wrong')}b.onclick=()=>{if(!answers.has(q.id)){answers.set(q.id,n);if(n!==q.answer)wrong.add(q.id);else wrong.delete(q.id);persistSets();renderQuestion()}};box.appendChild(b)});const ans=$('#answerPanel'),exp=$('#explanationPanel');if(chosen){ans.classList.remove('hidden');ans.innerHTML=`${chosen===q.answer?'答對。':'答錯。'} 正確答案：<b>${['①','②','③','④'][q.answer-1]} ${esc(q.options[q.answer-1]||'')}</b>`;exp.classList.remove('hidden');exp.innerHTML=explanations[q.id]?formatExplanation(explanations[q.id]):'<h3>完整詳解</h3><p>這題尚未預先生成 AI 詳解。可按「問 AI」針對本題解釋，或到首頁執行「預先生成全部詳解」。</p>'}else{ans.classList.add('hidden');exp.classList.add('hidden')}$('#favoriteQuestion').textContent=favorites.has(q.id)?'★ 已收藏':'☆ 收藏';$('#prevQuestion').disabled=qIndex===0;$('#nextQuestion').textContent=qIndex===quiz.length-1?'交卷':'下一題'}
+$('#prevQuestion').onclick=()=>{if(qIndex>0){qIndex--;renderQuestion()}};$('#nextQuestion').onclick=()=>{if(qIndex===quiz.length-1)return finishQuiz();qIndex++;renderQuestion()};$('#exitQuiz').onclick=()=>$('#quizCard').classList.add('hidden');$('#backFromResult').onclick=()=>$('#quizResult').classList.add('hidden');
+$('#favoriteQuestion').onclick=()=>{const q=quiz[qIndex];favorites.has(q.id)?favorites.delete(q.id):favorites.add(q.id);persistSets();renderQuestion()};
+function finishQuiz(){let c=0;for(const q of quiz)if(answers.get(q.id)===q.answer)c++;$('#quizCard').classList.add('hidden');$('#quizResult').classList.remove('hidden');$('#score').textContent=Math.round(c/quiz.length*100)+'%';$('#scoreDetail').textContent=`答對 ${c}/${quiz.length} 題`;updateReview()}
+function persistSets(){localStorage.setItem('prepress_favs',JSON.stringify([...favorites]));localStorage.setItem('prepress_wrong',JSON.stringify([...wrong]));updateReview()}
+
+$('#pdfInput').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{await importPdf(f)}catch(err){alert('PDF 解析失敗：'+(err?.message||err))}finally{e.target.value=''}};
+$('#bankJsonInput').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{const obj=JSON.parse(await f.text());const incoming=Array.isArray(obj)?obj:(obj.questions||[]);if(!Array.isArray(incoming)||incoming.length<1)throw new Error('找不到 questions');questions=incoming;await idbSet('questions',questions);renderAll();alert(`已匯入 ${questions.length} 題。`)}catch(err){alert('題庫 JSON 匯入失敗：'+(err?.message||err))}finally{e.target.value=''}};
+$('#explanationInput').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{const obj=JSON.parse(await f.text());if(!obj||typeof obj!=='object'||Array.isArray(obj))throw new Error('格式必須是 {題目ID: 詳解}');explanations={...explanations,...obj};await idbSet('explanations',explanations);updateStats();alert(`詳解庫已匯入，目前 ${questions.filter(q=>explanations[q.id]).length}/${questions.length} 題。`)}catch(err){alert('詳解 JSON 匯入失敗：'+(err?.message||err))}finally{e.target.value=''}};
+async function parsePdfBuffer(buf,{showProgress=false}={}){
+  if(!window.pdfjsLib)throw new Error('PDF.js 尚未載入，請確認網路連線。');
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf=await window.pdfjsLib.getDocument({data:buf}).promise;
+  let text='';
+  for(let p=1;p<=pdf.numPages;p++){
+    const pg=await pdf.getPage(p),tc=await pg.getTextContent();
+    text+=' '+tc.items.map(x=>x.str).join(' ');
+    if(showProgress){$('#importStatus').textContent=`解析第 ${p}/${pdf.numPages} 頁`;$('#importProgress').style.width=(p/pdf.numPages*80)+'%'}
+  }
+  const parsed=parseOfficialText(text);
+  if(parsed.length<600)throw new Error(`只解析到 ${parsed.length} 題，請確認是 19101 官方題庫 PDF。`);
+  return parsed;
+}
+async function importPdf(file){
+  $('#importDialog').showModal();$('#importStatus').textContent='讀取 PDF…';
+  const parsed=await parsePdfBuffer(await file.arrayBuffer(),{showProgress:true});
+  questions=parsed;await idbSet('questions',questions);
+  $('#importProgress').style.width='100%';$('#importStatus').textContent=`完成：${questions.length} 題`;
+  setTimeout(()=>$('#importDialog').close(),700);renderAll();
+}
+async function autoSyncOfficialBank(){
+  if(!window.pdfjsLib)return;
+  const status=$('#bankStatus');
+  const original=status.textContent;
+  status.textContent='正在從官方題庫自動同步完整題目…';
+  try{
+    const r=await fetch('https://jumroelpuqjqqbhkiurs.supabase.co/functions/v1/prepress-ai-tutor?asset=bank-pdf',{cache:'no-store'});
+    if(!r.ok)throw new Error('同步端點 '+r.status);
+    const parsed=await parsePdfBuffer(await r.arrayBuffer());
+    questions=parsed;await idbSet('questions',questions);
+    renderAll();
+    status.textContent=`已從官方題庫自動同步 ${questions.length} 題並存在本機。`;
+  }catch(e){
+    console.warn('official bank auto sync failed',e);
+    status.textContent=(original||'')+' 自動同步未完成，可按「匯入官方 PDF」。';
+  }
+}
+function parseOfficialText(raw){let text=raw.replace(/Page\s+\d+\s+of\s+46/g,' ').replace(/\s+/g,' ').trim();const markers=chapterDefs.map(d=>text.search(new RegExp(`工作項目\\s*0?${d.id}\\s*[：:]\\s*${d.name}`)));let out=[];if(markers.every(x=>x>=0)){chapterDefs.forEach((d,i)=>{const seg=text.slice(markers[i],i<4?markers[i+1]:text.length);out.push(...parseQuestions(seg,d.id,d.count))})}else{const all=parseQuestions(text,1,9999);if(all.length>=600){let off=0;for(const d of chapterDefs){all.slice(off,off+d.count).forEach((q,i)=>out.push({...q,id:`${d.id}-${i+1}`,chapter:d.id,num:i+1}));off+=d.count}}}return out}
+function parseQuestions(seg,chapter,max){const re=/(\d{1,3})\s*[\.．]\s*\(([1-4])\)\s*/g,h=[];let m;while((m=re.exec(seg))){const n=+m[1];if(n>=1&&n<=max)h.push({idx:m.index,end:re.lastIndex,num:n,answer:+m[2]})}const seen=new Set(),out=[];h.forEach((x,i)=>{if(seen.has(x.num))return;seen.add(x.num);const body=seg.slice(x.end,i+1<h.length?h[i+1].idx:seg.length).trim();const marks=['①','②','③','④'],pos=marks.map(z=>body.indexOf(z));let question=body,opts=['','','',''];if(pos.every(v=>v>=0)){question=body.slice(0,pos[0]).trim();opts=pos.map((s,j)=>body.slice(s+1,j<3?pos[j+1]:body.length).trim())}else{question=body.replace(/[①②③④].*/,'').trim();opts=opts.map(()=> '（圖示選項，請對照原題 PDF）')}out.push({id:`${chapter}-${x.num}`,chapter,num:x.num,answer:x.answer,question,options:opts})});return out}
+$('#exportBank').onclick=()=>downloadJson('prepress-question-bank.json',{questions});
+$('#exportExplanations').onclick=()=>downloadJson('prepress-explanations.json',explanations);
+
+$('#openAiSettings').onclick=()=>$('#aiDialog').showModal();$('#closeAiSettings').onclick=()=>$('#aiDialog').close();
+function loadAiSettings(){const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');$('#aiMode').value=s.mode||'puter';$('#providerPreset').value=s.provider||'custom';$('#proxyUrl').value=s.proxyUrl||'/api/ai';$('#baseUrl').value=s.baseUrl||providerPresets[s.provider||'custom']?.base||'';$('#modelName').value=s.model||'qwen/qwen3.7-max';$('#rememberKey').checked=!!s.rememberKey;$('#apiKey').value=s.rememberKey?(s.apiKey||''):(sessionStorage.getItem('prepress_api_key')||'');updateAiFormState()}
+function saveAiSettings(){const s={mode:$('#aiMode').value,provider:$('#providerPreset').value,proxyUrl:$('#proxyUrl').value.trim(),baseUrl:$('#baseUrl').value.trim(),model:$('#modelName').value.trim()||'qwen/qwen3.7-max',rememberKey:$('#rememberKey').checked};const key=$('#apiKey').value.trim();if(s.rememberKey)s.apiKey=key;else{sessionStorage.setItem('prepress_api_key',key);delete s.apiKey}localStorage.setItem('prepress_ai_settings',JSON.stringify(s));updateAiBadge();return {...s,apiKey:key}}
+function updateAiFormState(){const mode=$('#aiMode').value;const direct=mode==='direct',proxy=mode==='proxy',puter=mode==='puter';$('#providerPreset').disabled=!direct;$('#baseUrl').disabled=!direct;$('#apiKey').disabled=!direct;$('#rememberKey').disabled=!direct;$('#proxyUrl').disabled=!proxy;$('#modelName').disabled=false;$('#modelName').placeholder=puter?'Puter 模型，例如 qwen/qwen3.7-max':'例如供應商提供的模型 ID'}
+$('#aiMode').onchange=updateAiFormState;
+$('#providerPreset').onchange=()=>{const p=providerPresets[$('#providerPreset').value];if(p&&p.base)$('#baseUrl').value=p.base};
+$('#saveAiSettings').onclick=()=>{saveAiSettings();$('#aiDialog').close()};
+$('#clearAiKey').onclick=()=>{sessionStorage.removeItem('prepress_api_key');const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');delete s.apiKey;s.rememberKey=false;localStorage.setItem('prepress_ai_settings',JSON.stringify(s));$('#apiKey').value='';$('#rememberKey').checked=false;updateAiBadge()};
+loadAiSettings();
+function getAiSettings(){const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');return {...s,apiKey:s.rememberKey?(s.apiKey||''):(sessionStorage.getItem('prepress_api_key')||$('#apiKey').value||'')}}
+function updateAiBadge(){const s=getAiSettings();if(s.mode==='puter'){$('#aiStatusBadge').textContent='免費 AI · Puter';return}const ok=s.mode==='proxy'?!!s.proxyUrl:!!(s.baseUrl&&s.model&&s.apiKey);$('#aiStatusBadge').textContent=ok?'已設定':'未連線'}
+function puterText(result){if(typeof result==='string')return result;if(result?.message?.content){const c=result.message.content;if(typeof c==='string')return c;if(Array.isArray(c))return c.map(x=>x?.text||x?.content||'').join('')}if(typeof result?.text==='string')return result.text;return String(result??'')}
+async function aiCall(messages,{json=false,maxTokens=2600}={}){
+  const s=getAiSettings();
+  if(s.mode==='puter'){
+    if(!window.puter?.ai?.chat)throw new Error('免費 AI 元件尚未載入，請確認網路後重新整理');
+    const model=s.model||'qwen/qwen3.7-max';
+    const promptMessages=json?[...messages,{role:'system',content:'請只輸出有效 JSON，不要使用 Markdown code fence。'}]:messages;
+    const result=await window.puter.ai.chat(promptMessages,{model});
+    return puterText(result);
+  }
+  if(s.mode==='proxy'){
+    if(!s.proxyUrl)throw new Error('尚未設定 Proxy URL');
+    const r=await fetch(s.proxyUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages,model:s.model||undefined,json,max_tokens:maxTokens})});
+    if(!r.ok)throw new Error('Proxy 回應 '+r.status+': '+(await r.text()).slice(0,400));
+    const d=await r.json();return d.text||d.content||d.choices?.[0]?.message?.content||''
+  }
+  if(!s.baseUrl||!s.apiKey||!s.model)throw new Error('請先完成 Direct BYOK 設定');
+  const endpoint=s.baseUrl.replace(/\/$/,'').endsWith('/chat/completions')?s.baseUrl.replace(/\/$/,''):s.baseUrl.replace(/\/$/,'')+'/chat/completions';
+  const payload={model:s.model,messages,temperature:.2,max_tokens:maxTokens};if(json)payload.response_format={type:'json_object'};
+  let r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.apiKey},body:JSON.stringify(payload)});
+  if(!r.ok&&json&&r.status>=400&&r.status<500){delete payload.response_format;r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.apiKey},body:JSON.stringify(payload)})}
+  if(!r.ok)throw new Error('AI 回應 '+r.status+': '+(await r.text()).slice(0,400));
+  const d=await r.json();return d.choices?.[0]?.message?.content||''
+}
+$('#testAi').onclick=async()=>{const box=$('#aiTestResult');box.classList.remove('hidden');box.textContent='測試中…';saveAiSettings();try{const t=await aiCall([{role:'user',content:'只回覆：連線成功'}]);box.textContent=t||'連線成功'}catch(e){box.textContent='失敗：'+e.message}};
+
+$('#preGenerate').onclick=async()=>{if(generating)return;if(!confirm(`將為目前 ${questions.length} 題批次建立詳解並儲存在本機。免費 AI 模式不需要 API Key，但 660 題會需要較長時間，確定開始？`))return;generating=true;stopGeneration=false;$('#pauseGenerate').disabled=false;$('#preGenerate').disabled=true;try{const pending=questions.filter(q=>!explanations[q.id]);for(let i=0;i<pending.length&&!stopGeneration;i+=4){const batch=pending.slice(i,i+4);const prompt=buildBatchPrompt(batch);try{const raw=await aiCall([{role:'system',content:'你是台灣印前製程丙級技術士檢定教師。正確答案已給定，不得自行改答案。詳解要具體、可用來複習，圖示題資訊不足時不得虛構。只輸出JSON。'},{role:'user',content:prompt}],{json:true,maxTokens:5600});const obj=parseJson(raw);for(const item of obj.items||[]){if(item.id&&item.explanation)explanations[item.id]=item.explanation}await idbSet('explanations',explanations);updateStats()}catch(err){console.warn('batch failed',err);await sleep(900)}}}finally{generating=false;$('#pauseGenerate').disabled=true;$('#preGenerate').disabled=false;updateStats()}};
+$('#pauseGenerate').onclick=()=>{stopGeneration=true};
+function buildBatchPrompt(batch){return `請為下列題目產生完整繁體中文詳解。每題約180～320字。explanation 必須包含：【答案核心】說明為何正確；【逐項判斷】逐一說明另外三個選項為何不對；【考點延伸】補充相關印前知識、公式、單位或實務；【快速記法】一句考試好背的記法。題庫答案已提供，絕對不得改答案。若題目依賴未提供的圖片，明確說明需對照原題圖，只解釋能確定的概念，不可虛構。回傳 JSON：{"items":[{"id":"1-1","explanation":"..."}]}。題目：\n${JSON.stringify(batch.map(q=>({id:q.id,chapter:q.chapter,num:q.num,question:q.question,options:q.options,answer:q.answer,answerText:q.options[q.answer-1]})))}`}
+function parseJson(s){s=s.trim().replace(/^```json\s*/i,'').replace(/```$/,'').trim();return JSON.parse(s)}
+
+$('#sendTeacher').onclick=sendTeacher;$('#teacherPrompt').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey))sendTeacher()});$$('.teacher-quick').forEach(b=>b.onclick=()=>{$('#teacherPrompt').value=b.dataset.prompt||'';sendTeacher()});
+async function sendTeacher(){const t=$('#teacherPrompt').value.trim();if(!t)return;addBubble('user',t);$('#teacherPrompt').value='';const thinking=addBubble('ai','思考中…');try{const history=[...$('#chat').querySelectorAll('.bubble')].slice(-10).map(x=>({role:x.classList.contains('user')?'user':'assistant',content:x.textContent}));const text=await aiCall([{role:'system',content:'你是台灣印前製程丙級技術士檢定家教。用繁體中文，先講原理，再用簡單例子與考試記法；遇到計算要一步一步列式。若不確定要明講，不可亂猜。課程範圍涵蓋原稿判讀與處理、工具使用、版面資料、組版處理、輸出。'},...history]);thinking.textContent=text}catch(e){thinking.textContent='AI 連線失敗：'+e.message}}
+function addBubble(type,text){const d=document.createElement('div');d.className='bubble '+type;d.textContent=text;$('#chat').appendChild(d);$('#chat').scrollTop=$('#chat').scrollHeight;return d}
+$('#askAiQuestion').onclick=()=>{const q=quiz[qIndex];$$('.tabs button').find(b=>b.dataset.tab==='teacher').click();const unit=units.find(u=>u.id===q.chapter);$('#teacherPrompt').value=`請詳細教我這題，不要只講答案，要說明每個選項、考點延伸與快速記法。\n單元：${unit?.name||q.chapter}\n題目：${q.question}\n${q.options.map((x,i)=>`${i+1}. ${x}`).join('\n')}\n題庫正確答案：${q.answer}（不得更改）`;$('#teacherPrompt').focus()};
+
+function formatExplanation(t){return '<h3>完整詳解</h3><p>'+esc(t).replace(/\n/g,'<br>')+'</p>'}function esc(s=''){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function sleep(ms){return new Promise(r=>setTimeout(r,ms))}function downloadJson(name,obj){const u=URL.createObjectURL(new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+
+window.addEventListener('online',()=>$('#bankStatus').classList.remove('status-warn'));window.addEventListener('offline',()=>$('#bankStatus').classList.add('status-warn'));renderAll();
+
+  </script>
+</body>
+</html>
