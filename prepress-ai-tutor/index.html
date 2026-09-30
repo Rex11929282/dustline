@@ -20,7 +20,7 @@
         <h1>AI 學習題庫</h1>
         <p>完整 1～5 單元複習、660 題同步、錯題、收藏、AI 詳解與免費 AI 老師。</p>
       </div>
-      <button id="openAiSettings" class="ghost compact">AI：免費免 Key</button>
+      <button id="openAiSettings" class="ghost compact">AI：本機免註冊</button>
     </header>
 
     <main class="shell">
@@ -123,25 +123,25 @@
   <dialog id="studyDialog" class="modal"><div class="modal-head"><div><div id="studyUnitNo" class="eyebrow"></div><h2 id="studyUnitTitle"></h2></div><button id="closeStudyDialog" class="ghost compact">關閉</button></div><p id="studyUnitSubtitle" class="lead"></p><div id="studyUnitContent"></div></dialog>
 
   <dialog id="aiDialog" class="modal settings-modal"><div class="modal-head"><div><div class="eyebrow">AI CONNECTOR</div><h2>AI 接入設定</h2></div><button id="closeAiSettings" class="ghost compact">關閉</button></div>
-    <p class="notice"><b>預設使用 Puter 免費免 Key AI。</b> 不需要填 API Key 或架設 AI 後端；第一次使用可能會跳出 Puter 登入/授權。若你之後要換自己的模型，也保留安全 Proxy 與 BYOK 模式。</p>
+    <p class="notice"><b>預設使用本機 AI，不需要註冊、不需要 API Key。</b> AI 直接在你的瀏覽器執行。第一次使用會下載約 500MB 的模型檔，建議先連 Wi‑Fi；下載完成後會由瀏覽器快取。</p>
     <div class="form-grid">
-      <label>模式<select id="aiMode"><option value="puter">Puter 免費免 Key AI（預設）</option><option value="proxy">安全 Proxy（進階）</option><option value="direct">直接 BYOK（進階）</option></select></label>
+      <label>模式<select id="aiMode"><option value="local">本機 AI（免註冊、免 Key，預設）</option><option value="proxy">安全 Proxy（進階）</option><option value="direct">直接 BYOK（進階）</option></select></label>
       <label>供應商預設<select id="providerPreset"><option value="custom">自訂 OpenAI-compatible</option><option value="openai">OpenAI</option><option value="openrouter">OpenRouter</option><option value="deepseek">DeepSeek</option><option value="gemini">Google Gemini（OpenAI 相容端點）</option></select></label>
       <label>Proxy URL<input id="proxyUrl" value="/api/ai" placeholder="/api/ai 或 https://..." /></label>
       <label>OpenAI-compatible Base URL<input id="baseUrl" placeholder="https://provider.example/v1" /></label>
-      <label>Model<input id="modelName" value="qwen/qwen3.7-max" placeholder="Puter 預設 qwen/qwen3.7-max" /></label>
+      <label>Model<input id="modelName" value="onnx-community/Qwen2.5-0.5B-Instruct" placeholder="本機預設 Qwen2.5-0.5B-Instruct" /></label>
       <label>API Key<input id="apiKey" type="password" autocomplete="off" placeholder="只在 direct 模式使用" /></label>
       <label class="check"><input id="rememberKey" type="checkbox" /> 記住 API Key（不建議公用裝置）</label>
     </div>
     <div class="row wrap"><button id="saveAiSettings" class="primary">儲存設定</button><button id="testAi" class="ghost">測試連線</button><button id="clearAiKey" class="ghost">清除本機 Key</button></div>
-    <p class="microcopy">Puter 模式免 API Key。Puter 採使用者授權模式，平台本身的帳戶/用量規則由 Puter 決定。Proxy/BYOK 僅供進階替換模型。</p>
+    <p class="microcopy">本機模式完全不需要帳號或 API Key。模型會從公開模型庫下載到瀏覽器快取；Proxy/BYOK 僅供進階替換模型。</p>
     <div id="aiTestResult" class="notice hidden"></div>
   </dialog>
 
   <dialog id="importDialog" class="modal"><div class="modal-head"><div><div class="eyebrow">題庫匯入</div><h2>正在解析官方 PDF</h2></div></div><p id="importStatus">準備中…</p><div class="mini-progress"><span id="importProgress"></span></div></dialog>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous"></script>
-  <script src="https://js.puter.com/v2/"></script>
+  
   <script type="module">
 const units=[
 {id:1,name:'原稿判讀與處理',subtitle:'先判斷原稿、尺寸、影像、色彩與檔案是否適合後續印刷。',goals:['熟悉紙張尺寸與出血、完成尺寸','分辨點陣與向量、原稿種類','理解 PPI/DPI/LPI 與縮放','掌握 RGB/CMYK、色域與常見檔案格式'],must:['A4=210×297mm；A3=297×420mm；A3 對折=A4','有效PPI≈原始PPI÷放大倍率','螢幕以RGB為主，四色印刷以CMYK為主','背景做到紙邊就要出血；重要文字要內縮'],topics:[
@@ -319,25 +319,51 @@ $('#exportBank').onclick=()=>downloadJson('prepress-question-bank.json',{questio
 $('#exportExplanations').onclick=()=>downloadJson('prepress-explanations.json',explanations);
 
 $('#openAiSettings').onclick=()=>$('#aiDialog').showModal();$('#closeAiSettings').onclick=()=>$('#aiDialog').close();
-function loadAiSettings(){if(!localStorage.getItem('prepress_ai_free_migrated_v1')){localStorage.setItem('prepress_ai_settings',JSON.stringify({mode:'puter',provider:'custom',model:'qwen/qwen3.7-max'}));localStorage.setItem('prepress_ai_free_migrated_v1','1')}const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');$('#aiMode').value=s.mode||'puter';$('#providerPreset').value=s.provider||'custom';$('#proxyUrl').value=s.proxyUrl||'/api/ai';$('#baseUrl').value=s.baseUrl||providerPresets[s.provider||'custom']?.base||'';$('#modelName').value=s.model||'qwen/qwen3.7-max';$('#rememberKey').checked=!!s.rememberKey;$('#apiKey').value=s.rememberKey?(s.apiKey||''):(sessionStorage.getItem('prepress_api_key')||'');updateAiFormState()}
-function saveAiSettings(){const s={mode:$('#aiMode').value,provider:$('#providerPreset').value,proxyUrl:$('#proxyUrl').value.trim(),baseUrl:$('#baseUrl').value.trim(),model:$('#modelName').value.trim()||'qwen/qwen3.7-max',rememberKey:$('#rememberKey').checked};const key=$('#apiKey').value.trim();if(s.rememberKey)s.apiKey=key;else{sessionStorage.setItem('prepress_api_key',key);delete s.apiKey}localStorage.setItem('prepress_ai_settings',JSON.stringify(s));updateAiBadge();return {...s,apiKey:key}}
-function updateAiFormState(){const mode=$('#aiMode').value;const direct=mode==='direct',proxy=mode==='proxy',puter=mode==='puter';$('#providerPreset').disabled=!direct;$('#baseUrl').disabled=!direct;$('#apiKey').disabled=!direct;$('#rememberKey').disabled=!direct;$('#proxyUrl').disabled=!proxy;$('#modelName').disabled=false;$('#modelName').placeholder=puter?'Puter 模型，例如 qwen/qwen3.7-max':'例如供應商提供的模型 ID'}
+function loadAiSettings(){if(!localStorage.getItem('prepress_ai_local_migrated_v1')){localStorage.setItem('prepress_ai_settings',JSON.stringify({mode:'local',provider:'custom',model:'onnx-community/Qwen2.5-0.5B-Instruct'}));localStorage.setItem('prepress_ai_local_migrated_v1','1')}const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');$('#aiMode').value=s.mode||'local';$('#providerPreset').value=s.provider||'custom';$('#proxyUrl').value=s.proxyUrl||'/api/ai';$('#baseUrl').value=s.baseUrl||providerPresets[s.provider||'custom']?.base||'';$('#modelName').value=s.model||'onnx-community/Qwen2.5-0.5B-Instruct';$('#rememberKey').checked=!!s.rememberKey;$('#apiKey').value=s.rememberKey?(s.apiKey||''):(sessionStorage.getItem('prepress_api_key')||'');updateAiFormState()}
+function saveAiSettings(){const s={mode:$('#aiMode').value,provider:$('#providerPreset').value,proxyUrl:$('#proxyUrl').value.trim(),baseUrl:$('#baseUrl').value.trim(),model:$('#modelName').value.trim()||'onnx-community/Qwen2.5-0.5B-Instruct',rememberKey:$('#rememberKey').checked};const key=$('#apiKey').value.trim();if(s.rememberKey)s.apiKey=key;else{sessionStorage.setItem('prepress_api_key',key);delete s.apiKey}localStorage.setItem('prepress_ai_settings',JSON.stringify(s));updateAiBadge();return {...s,apiKey:key}}
+function updateAiFormState(){const mode=$('#aiMode').value;const direct=mode==='direct',proxy=mode==='proxy',local=mode==='local';$('#providerPreset').disabled=!direct;$('#baseUrl').disabled=!direct;$('#apiKey').disabled=!direct;$('#rememberKey').disabled=!direct;$('#proxyUrl').disabled=!proxy;$('#modelName').disabled=local;$('#modelName').placeholder=local?'本機固定使用 Qwen2.5-0.5B-Instruct':'例如供應商提供的模型 ID'}
 $('#aiMode').onchange=updateAiFormState;
 $('#providerPreset').onchange=()=>{const p=providerPresets[$('#providerPreset').value];if(p&&p.base)$('#baseUrl').value=p.base};
 $('#saveAiSettings').onclick=()=>{saveAiSettings();$('#aiDialog').close()};
 $('#clearAiKey').onclick=()=>{sessionStorage.removeItem('prepress_api_key');const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');delete s.apiKey;s.rememberKey=false;localStorage.setItem('prepress_ai_settings',JSON.stringify(s));$('#apiKey').value='';$('#rememberKey').checked=false;updateAiBadge()};
 loadAiSettings();
 function getAiSettings(){const s=JSON.parse(localStorage.getItem('prepress_ai_settings')||'{}');return {...s,apiKey:s.rememberKey?(s.apiKey||''):(sessionStorage.getItem('prepress_api_key')||$('#apiKey').value||'')}}
-function updateAiBadge(){const s=getAiSettings();if(s.mode==='puter'){$('#aiStatusBadge').textContent='免費 AI · Puter';return}const ok=s.mode==='proxy'?!!s.proxyUrl:!!(s.baseUrl&&s.model&&s.apiKey);$('#aiStatusBadge').textContent=ok?'已設定':'未連線'}
-function puterText(result){if(typeof result==='string')return result;if(result?.message?.content){const c=result.message.content;if(typeof c==='string')return c;if(Array.isArray(c))return c.map(x=>x?.text||x?.content||'').join('')}if(typeof result?.text==='string')return result.text;return String(result??'')}
+function updateAiBadge(){const s=getAiSettings();if(s.mode==='local'){$('#aiStatusBadge').textContent=localGenerator?'本機 AI 已就緒':'免註冊本機 AI';return}const ok=s.mode==='proxy'?!!s.proxyUrl:!!(s.baseUrl&&s.model&&s.apiKey);$('#aiStatusBadge').textContent=ok?'已設定':'未連線'}
+let localGenerator=null,localGeneratorPromise=null;
+async function ensureLocalGenerator(){
+  if(localGenerator)return localGenerator;
+  if(localGeneratorPromise)return localGeneratorPromise;
+  localGeneratorPromise=(async()=>{
+    $('#aiStatusBadge').textContent='正在載入本機 AI…';
+    const {pipeline}=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.0');
+    const useWebGPU=!!navigator.gpu;
+    const options={
+      dtype:useWebGPU?'q4f16':'q8',
+      device:useWebGPU?'webgpu':'wasm',
+      progress_callback:(info)=>{
+        if(info?.status==='progress_total'&&Number.isFinite(info.progress))$('#aiStatusBadge').textContent='下載模型 '+Math.round(info.progress)+'%';
+        else if(info?.status==='progress'&&Number.isFinite(info.progress))$('#aiStatusBadge').textContent='下載模型 '+Math.round(info.progress)+'%';
+        else if(info?.status==='ready')$('#aiStatusBadge').textContent='本機 AI 已就緒';
+      }
+    };
+    localGenerator=await pipeline('text-generation','onnx-community/Qwen2.5-0.5B-Instruct',options);
+    $('#aiStatusBadge').textContent='本機 AI 已就緒';
+    return localGenerator;
+  })();
+  try{return await localGeneratorPromise}finally{localGeneratorPromise=null}
+}
+async function localAiCall(messages,{maxTokens=512}={}){
+  const generator=await ensureLocalGenerator();
+  const output=await generator(messages,{max_new_tokens:Math.min(Math.max(64,maxTokens||512),768),do_sample:false});
+  const generated=output?.[0]?.generated_text;
+  if(Array.isArray(generated)){const last=generated.at(-1);return last?.content||String(last||'')}
+  return typeof generated==='string'?generated:String(generated||'');
+}
 async function aiCall(messages,{json=false,maxTokens=2600}={}){
   const s=getAiSettings();
-  if(s.mode==='puter'){
-    if(!window.puter?.ai?.chat)throw new Error('免費 AI 元件尚未載入，請確認網路後重新整理');
-    const model=s.model||'qwen/qwen3.7-max';
+  if(s.mode==='local'){
     const promptMessages=json?[...messages,{role:'system',content:'請只輸出有效 JSON，不要使用 Markdown code fence。'}]:messages;
-    const result=await window.puter.ai.chat(promptMessages,{model});
-    return puterText(result);
+    return await localAiCall(promptMessages,{maxTokens});
   }
   if(s.mode==='proxy'){
     if(!s.proxyUrl)throw new Error('尚未設定 Proxy URL');
